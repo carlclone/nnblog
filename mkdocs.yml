@@ -7,6 +7,7 @@ nav:
       - Markdown 画图 : tools/markdown-diagram.md
   - 算法:
       - 整数转二进制字符串: algos/int-to-binary-str.md
+      - 多字段排序: algos/multiple-field-sort.md
   - 构建自己的 X 项目:
       - 构建自己的 jQuery: build-my-own-x/jquery.md
       - 构建自己的 PHP 框架: build-my-own-x/php-framework.md
