@@ -1,0 +1,30 @@
+site_name: Log0C
+nav:
+  - 主页: index.md
+  - 工具:
+      - Xdebug : tools/xdebug.md
+      - Chrome Dev Tools : tools/chrome-dev-tools.md
+      - Markdown 画图 : tools/markdown-diagram.md
+  - 算法:
+      - 整数转二进制字符串: algos/int-to-binary-str.md
+  - 构建自己的 X 项目:
+      - 构建自己的 jQuery: build-my-own-x/jquery.md
+      - 构建自己的 PHP 框架: build-my-own-x/php-framework.md
+      - 构建自己的 Vue 框架: build-my-own-x/vue.md
+  - 课程 Labs:
+      - CSAPP - Proxy: sad
+      - CSAPP - Shell: sad
+      - MIT 6.824 - MapReduce: asd
+      - MIT 6.824 - Raft: asd
+      - MIT 6.824 - KV: asd
+      - CS144 - ByteStream: asd
+      - CS144 - TCP Sender: asd
+      - CS144 - TCP Receiver: asd
+      - CS144 - TCP Connection: asd
+  - Mac:
+      - Notes.app 卡死问题: mac/mac-note-stalled.md
+      - 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
+  - PHP:
+      - Composer 是如何工作的: php/how-composer-work.md
+
+theme: readthedocs
