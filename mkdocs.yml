@@ -24,10 +24,7 @@ nav:
   #      - MIT 6.824 - MapReduce: asd
   #      - MIT 6.824 - Raft: asd
   #      - MIT 6.824 - KV: asd
-  #      - CS144 - ByteStream: asd
-  #      - CS144 - TCP Sender: asd
-  #      - CS144 - TCP Receiver: asd
-  #      - CS144 - TCP Connection: asd
+      - CS144 总结: labs/cs144.md
   - Mac:
       - Notes.app 卡死问题: mac/mac-note-stalled.md
       - 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
