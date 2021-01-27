@@ -2,9 +2,9 @@ site_name: Log0c
 nav:
   - 主页: index.md
   - 工具:
-      - Xdebug: tools/xdebug.md
-      - Chrome Dev Tools: tools/chrome-dev-tools.md
-      - Markdown 画图: tools/markdown-diagram.md
+      - Xdebug 深入学习: tools/xdebug.md
+      - Chrome Dev Tools 深入学习: tools/chrome-dev-tools.md
+      - Markdown Diagram 功能: tools/markdown-diagram.md
   - 算法:
       - 整数转二进制字符串: algos/int-to-binary-str.md
       - 多字段排序: algos/multiple-field-sort.md
@@ -30,6 +30,7 @@ nav:
       - 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
   - PHP:
       - Composer 是如何工作的: php/how-composer-work.md
+      - Taylor otwell 采访文章: php/taylor-otwell-interview.md
 #  - 问题排查:
 #      - asd: asd
 #  - GO:
@@ -40,13 +41,16 @@ nav:
   #      - ASD: asd
   #  - 微服务实践笔记:
   #      - ASD: asd
-#  - 杂项:
-#      - asd: asd
+  - 杂项:
+      - Mac Python环境 miniConda +scrapy 搭建: others/mac_py_env_deploy.md
+
 
 
 theme: readthedocs
 plugins:
 #  - markdownmermaid
   - mermaid2
-#extra_javascript:
+extra_javascript:
+  - js/mermaid.min.js
+#  - js/highlight.min.js
 #  - https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js
