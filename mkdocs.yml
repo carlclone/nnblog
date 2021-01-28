@@ -28,19 +28,20 @@ nav:
       - Chrome Dev Tools 深入学习: tools/chrome-dev-tools.md
       - Markdown Diagram 功能: tools/markdown-diagram.md
       - 零散的工具使用技巧: tools/other-tools-usage.md
-      - RabbitMQ: asd.md
+#      - RabbitMQ: asd.md
   - Mac:
       - Notes.app 卡死问题: mac/mac-note-stalled.md
       - 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
   - PHP:
       - Composer 是如何工作的: php/how-composer-work.md
-      - Taylor otwell 采访文章: php/taylor-otwell-interview.md
+
+      - 关于业务代码的框架: php/business-logic-framework.md
 
   - 算法:
       - 整数转二进制字符串: algos/int-to-binary-str.md
       - 多字段排序: algos/multiple-field-sort.md
       - LRU 线程安全和高并发: algos/lru-cache-go.md
-      - XXXX: asd.md
+#      - XXXX: asd.md
   - 系统设计:
       - 秒杀系统: asd.md
 
@@ -56,7 +57,7 @@ nav:
   #      - ASD: asd
   - 杂项:
       - Mac Python环境 miniConda 搭建: others/mac_py_env_deploy.md
-
+      - Taylor otwell 采访文章: others/taylor-otwell-interview.md
 
 
 theme: readthedocs
@@ -65,5 +66,6 @@ plugins:
   - mermaid2
 extra_javascript:
   - js/mermaid.min.js
+  - js/custom.js
 #  - js/highlight.min.js
 #  - https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js
