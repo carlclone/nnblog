@@ -5,45 +5,45 @@ nav:
       - CSAPP - Proxy 总结: labs/csapp-proxy.md
       - CSAPP - Shell 总结: labs/csapp-shell.md
       - MIT 6.824 - MapReduce: labs/6824-mapreduce.md
-      - MIT 6.824 - Raft: labs/6824-raft.md
-      - MIT 6.824 - KV: labs/6824-kv-raft.md
+#      - MIT 6.824 - Raft: labs/6824-raft.md
+#      - MIT 6.824 - KV: labs/6824-kv.md
       - CS144 总结: labs/cs144.md
-      - CMU 15-445 2019 数据库总结: labs/cmu-15445-2019.md
-      - Staffjoy 总结: labs/staffjoy.md
-      - Distributed Crontab 总结: labs/staffjoy.md
+#      - CMU 15-445 2019 数据库总结: labs/cmu-15445-2019.md
+#      - Staffjoy 总结: labs/staffjoy.md
+#      - Distributed Crontab 总结: labs/distributed-crontab.md
   - 构建自己的 X 项目:
       - 构建自己的 jQuery: build-my-own-x/jquery.md
       - 构建自己的 PHP 框架: build-my-own-x/php-framework.md
-      - 构建自己的 Lisp Compiler: build-my-own-x/lisp-compiler.md
-      - 构建自己的 Regex Engine: build-my-own-x/regex-engine.md
+#      - 构建自己的 Lisp Compiler: build-my-own-x/lisp-compiler.md
+#      - 构建自己的 Regex Engine: build-my-own-x/regex-engine.md
       #      - 构建自己的 JSON Compiler: asd
       #      - 构建自己的 Chip 8 Emulator: asd
-      - 构建自己的 Vue 框架: build-my-own-x/vue.md
+#      - 构建自己的 Vue 框架: build-my-own-x/vue.md
       #      - 构建自己的 HTTP Cache 中间件: build-my-own-x/http-cache-middleman.md
       #      - 自己的 Symfony Lock / UID Component
-      - 构建自己的 doctrine ORM: asd.md
-      - 自己的消息队列: asd.md
+      - 构建自己的 doctrine ORM: build-my-own-x/doctrine-orm.md
+#      - 自己的消息队列: asd.md
   - 工具:
       - Xdebug 深入学习: tools/xdebug.md
       - Chrome Dev Tools 深入学习: tools/chrome-dev-tools.md
       - Markdown Diagram 功能: tools/markdown-diagram.md
-      - 零散的工具使用技巧: tools/other-tools-usage.md
+#      - 零散的工具使用技巧: tools/other-tools-usage.md
 #      - RabbitMQ: asd.md
   - Mac:
       - Notes.app 卡死问题: mac/mac-note-stalled.md
       - 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
   - PHP:
       - Composer 是如何工作的: php/how-composer-work.md
-
       - 关于业务代码的框架: php/business-logic-framework.md
 
   - 算法:
       - 整数转二进制字符串: algos/int-to-binary-str.md
       - 多字段排序: algos/multiple-field-sort.md
       - LRU 线程安全和高并发: algos/lru-cache-go.md
-#      - XXXX: asd.md
-  - 系统设计:
-      - 秒杀系统: asd.md
+#      - 一维数组 parent child 转多维树状数组 (表现形式不同而已) : asd.md
+#  - 抖音那道树题 (表现形式不同而已)
+#  - 系统设计:
+#      - 秒杀系统: asd.md
 
 #  - 问题排查:
 #      - asd: asd
