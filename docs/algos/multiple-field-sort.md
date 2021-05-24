@@ -28,6 +28,8 @@ func main() {
 
 只需要在快排的partition操作中多加一层判断,把元素放到正确的位置
 
+从排序函数中抽离出比较函数,comparator
+
 partition操作代码
 ```
 func partition2(nums [][]int, l int, r int) int {

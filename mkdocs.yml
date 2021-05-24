@@ -1,71 +1,112 @@
 site_name: Log0c
-nav:
-  - 主页: index.md
-  - 课程 Labs:
-      - CSAPP - Proxy 总结: labs/csapp-proxy.md
-      - CSAPP - Shell 总结: labs/csapp-shell.md
-      - MIT 6.824 - MapReduce: labs/6824-mapreduce.md
-#      - MIT 6.824 - Raft: labs/6824-raft.md
-#      - MIT 6.824 - KV: labs/6824-kv.md
-      - CS144 总结: labs/cs144.md
-#      - CMU 15-445 2019 数据库总结: labs/cmu-15445-2019.md
-#      - Staffjoy 总结: labs/staffjoy.md
-#      - Distributed Crontab 总结: labs/distributed-crontab.md
-  - 构建自己的 X 项目:
-      - 构建自己的 jQuery: build-my-own-x/jquery.md
-      - 构建自己的 PHP 框架: build-my-own-x/php-framework.md
-#      - 构建自己的 Lisp Compiler: build-my-own-x/lisp-compiler.md
-#      - 构建自己的 Regex Engine: build-my-own-x/regex-engine.md
-      #      - 构建自己的 JSON Compiler: asd
-      #      - 构建自己的 Chip 8 Emulator: asd
-#      - 构建自己的 Vue 框架: build-my-own-x/vue.md
-      #      - 构建自己的 HTTP Cache 中间件: build-my-own-x/http-cache-middleman.md
-      #      - 自己的 Symfony Lock / UID Component
-      - 构建自己的 doctrine ORM: build-my-own-x/doctrine-orm.md
-#      - 自己的消息队列: asd.md
-  - 工具:
-      - Xdebug 深入学习: tools/xdebug.md
-      - Chrome Dev Tools 深入学习: tools/chrome-dev-tools.md
-      - Markdown Diagram 功能: tools/markdown-diagram.md
-#      - 零散的工具使用技巧: tools/other-tools-usage.md
-#      - RabbitMQ: asd.md
-  - Mac:
-      - Notes.app 卡死问题: mac/mac-note-stalled.md
-      - 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
-  - PHP:
-      - Composer 是如何工作的: php/how-composer-work.md
-      - 关于业务代码的框架: php/business-logic-framework.md
-
-  - 算法:
-      - 整数转二进制字符串: algos/int-to-binary-str.md
-      - 多字段排序: algos/multiple-field-sort.md
-      - LRU 线程安全和高并发: algos/lru-cache-go.md
-#      - 一维数组 parent child 转多维树状数组 (表现形式不同而已) : asd.md
-#  - 抖音那道树题 (表现形式不同而已)
-#  - 系统设计:
-#      - 秒杀系统: asd.md
-
-#  - 问题排查:
-#      - asd: asd
-#  - GO:
-#      - dsad: asd
-#      - sdds: dd
-#      - dsds: ddd
-  #  - Redis 源码阅读:
-  #      - ASD: asd
-  #  - 微服务实践笔记:
-  #      - ASD: asd
-  - 杂项:
-      - Mac Python环境 miniConda 搭建: others/mac_py_env_deploy.md
-      - Taylor otwell 采访文章: others/taylor-otwell-interview.md
-
-
-theme: readthedocs
+theme:
+  name: readthedocs
+  highlightjs: true
+#  custom_dir: custom_theme/
+  sticky_navigation: false
 plugins:
-#  - markdownmermaid
+  #  - markdownmermaid
   - mermaid2
 extra_javascript:
   - js/mermaid.min.js
   - js/custom.js
 #  - js/highlight.min.js
 #  - https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js
+nav:
+  - 主页: index.md
+  - 课程 Labs:
+      - MIT 6.824 - MapReduce: labs/6824-mapreduce.md
+      - MIT 6.824 - Raft: labs/6824-raft.md
+      - MIT 6.824 - KV: labs/6824-kv.md
+      - CSAPP - Shell: labs/csapp-shell.md
+      - CSAPP - Proxy: labs/csapp-proxy.md
+      - CS144: labs/cs144.md
+#      - CMU15445-2020: asd.md
+#      - CMU 15-445 ClockReplacer: labs/cmu-15445-replacer.md
+#      - CMU 15-445 HashTable: labs/cmu-15445-hashtable.md
+#      - CMU 15-445 课程回顾: labs/cmu-15445.md
+      #      - Staffjoy 总结: labs/staffjoy.md
+      #      - Distributed Crontab: labs/distributed-crontab.md
+      #      - Talent Plan - TiKV Lab: asdasd
+  - 工具:
+      - Xdebug 深入学习: tools/xdebug.md
+      - Chrome Dev Tools 深入学习: tools/chrome-dev-tools.md
+      - Markdown Diagram 功能: tools/markdown-diagram.md
+#      - 零散的工具使用技巧: tools/other-tools-usage.md
+#      - RabbitMQ: asd.md
+  - 算法:
+      - 整数转二进制字符串: algos/int-to-binary-str.md
+      - 多字段排序: algos/multiple-field-sort.md
+      - LRU 线程安全和高并发: algos/lru-cache-go.md
+#      - 一维数组 parent child 转多维树状数组: asd.md
+#      - 抖音那道树题: asd.md
+  - 数学/逻辑:
+      - 和波利亚学解题: problem-solve/learn-problem-solve-with-polya.md
+      - 计数和概率: problem-solve/probability.md
+      - 逻辑: problem-solve/逻辑智力题.md
+  - 构建自己的 X 项目:
+      - 构建自己的 jQuery: build-my-own-x/jquery.md
+      - 构建自己的 PHP 框架: build-my-own-x/php-framework.md
+#        - 构建一个 DB
+      #      - 尝试构建一个 Redis: build-my-own-x/redis.md
+      - 构建 Lisp Compiler: build-my-own-x/lisp-compiler.md
+      - Regex Engine 学习: build-my-own-x/regex.md
+      #      - 构建自己的 JSON Compiler: asd
+#      - 构建自己的 Chip 8 Emulator: asd
+      #      - 构建自己的 Vue 框架: build-my-own-x/vue.md
+      #      - 构建自己的 HTTP Cache 中间件: build-my-own-x/http-cache-middleman.md
+      #      - 自己的 Symfony Lock / UID Component
+  #      - 构建自己的 doctrine ORM: build-my-own-x/doctrine-orm.md
+  #      - 构建自己的 Timer: build-my-own-x/go-timer.md
+  #      - 构建自己的 OS: build-my-own-x/os.md
+  #      - 自己的消息队列: asd.md
+  - Mac:
+      - Notes.app 卡死问题: mac/mac-note-stalled.md
+      - 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
+  - PHP:
+      - Composer 是如何工作的: php/how-composer-work.md
+      - 关于业务代码的框架: php/business-logic-framework.md
+      - Symfony Lock Component: php/symfony-lock.md
+
+
+  - 杂项:
+      - Mac Python环境 miniConda 搭建: others/mac_py_env_deploy.md
+      - Taylor otwell 采访文章: others/taylor-otwell-interview.md
+
+
+  - 零碎知识点:
+      - 编程技巧/方法: knowledge-reduce/tricks.md
+      - 网络编程: knowledge-reduce/network_programming.md
+      - 问题排查: knowledge-reduce/problem_trace.md
+      - 计算机网络课程分享: knowledge-reduce/network-course.md
+      - MYSQL: knowledge-reduce/mysql.md
+      - 语言特性/底层实现: knowledge-reduce/language_trait_and_implementation.md
+      - 计算机组成原理: knowledge-reduce/computer_composition.md
+  #  - 系统设计:
+  #      - 秒杀系统设计: asd.md
+  - 归档:
+      - 博客服务器环境搭建记录: archive/blog_deploy_log.md
+      - Redis 设计与实现笔记: redis/redis_code_book_reading.md
+      - Laracasts学习记录: archive/laracasts_learning_path.md
+      - K480N 黑苹果安装记录: archive/black_sierra.md
+      - 从框架看PHP的五种境界[转]: archive/php_career_guide_line.md
+      - Laravel中的Marcoable: archive/laravel_marcoable.md
+      - Laravel框架关键技术-阅读总结: archive/laravel_code_book_reading.md
+      - Laravel-Admin源码阅读: archive/laravel_admin_code_reading.md
+      - 实习: archive/first_internship.md
+      - 2017 总结: summary/2017.md
+      - 2018 总结: archive/second_job.md
+      - 2019 总结: summary/2019.md
+      - 2020 总结: summary/2020.md
+
+
+  #  - 问题排查:
+  #      - asd: asd
+  #  - GO:
+  #      - dsad: asd
+  #      - sdds: dd
+  #      - dsds: ddd
+  #  - Redis 源码阅读:
+  #      - ASD: asd
+  #  - 微服务实践笔记:
+  #      - ASD: asd
