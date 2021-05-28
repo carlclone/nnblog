@@ -74,4 +74,3 @@ func mergeTwo(interval1 ,interval2 []int) []int {
 	}
 	return interval1
 }
-
