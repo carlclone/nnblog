@@ -18,6 +18,7 @@ distributed-crontab
 csapp
 beargit
 build-your-own-x
+talent plan
 
 # 八股文    50 / subject
 
