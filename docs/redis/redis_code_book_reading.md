@@ -1,0 +1,584 @@
+---
+title: Redis 设计与实现 第二遍笔记
+date: 2019-08-20
+tags: 计算机基础
+---
+
+
+&nbsp;
+
+<!-- more -->
+
+
+> 一口气看了两遍 , 因为可以看到有许多可以应用在实际工作业务中的多种策略的优劣权衡 , 如不停机扩容对应渐进式rehash , 过期键删除策略对应订单过期 , 持久化条件触发策略对应日志上传
+
+- 初步了解了集群的定义
+
+- 不停机扩容HashTable在 Redis中 的解决方案
+
+- Redis 字典实现中的渐进式 Hash方法
+
+- AOF 中的惰性删除策略
+
+- 持久化或日志上传策略 : 多条件触发  
+```
+900 1
+600 30
+300 100
+```
+
+
+## 额外资料
+
+[golang实现跳跃表](https://www.jianshu.com/p/400d24e9daa0?from=timeline&isappinstalled=0)
+[wiki ACID](https://en.wikipedia.org/wiki/ACID)
+[redis transaction](https://redis.io/topics/transactions)
+
+[书的官网](http://redisbook.com/) (相关资源 , 如带中文注释的redis源码 )
+
+[redis源码库](https://github.com/antirez/redis/tree/3.0)
+
+[书作者github](https://github.com/huangz1990)
+
+
+
+## 简单动态字符串(SDS)和C字符串的区别
+
+- free  可分配多余空间 , 避免频繁扩容
+
+- len 避免了C字符串的遍历获取长度 , O(n)变O(1) ,  并用于判断缓冲区溢出问题 ( C的strcat函数假设已分配了足够的内存进行拼接) , 长度为字符串实际长度 , 不包含空字符的长度
+
+- 使用char buf[]字节数组 , 而不是C字符串 , 二进制安全 , 但仍保留\0结尾 适配C字符串函数 , \0对使用者完全透明
+
+- 修改字符串时会自动扩容缩容 ( 空间预分配和惰性缩容 , 避免频繁内存分配 )
+
+- 预分配策略: 修改后字符串<1mb , 则空间x2 , >1mb , 则分配额外的1mb
+
+- 惰性缩容: 使用的空间<=1/4时缩为 1/2
+
+- 二进制安全: C字符串只能保存文本数据 , 字符串中不能包含\0空字符 , 空字符用于标记字符串的结尾 , 不能保存图片 , 音频的二进制数据 , 而SDS额外记录的len字段避免了这问题
+
+> 参考资料: C语言接口与实现: 创建可重用软件的技术
+
+
+
+## 链表
+
+- 使用到的地方: 较长的列表 ,发布/订阅 ,慢查询 ,监视器 ,redisServer结构中的clients属性 ,redisClient中的输出缓冲区
+
+- redis中的链表实现 : 双向链表 , 无环 (首节点的prev指向null , 尾结点的next指向null
+
+**C的typedef struct中的函数定义方法 (C 的面向对象写法)**
+
+```c
+typedef struct list {
+	void *(*dup) (void *prt);
+	void *(*free) (void *prt);
+}
+
+
+#include<stdio.h>
+#include<malloc.h>
+struct Hello{
+	void (*sayHello)(char* name); 
+};
+void sayHello(char* name){
+	printf("你好，%s\n",name);
+}
+int main(){
+	struct Hello* hello=(struct Hello *)malloc(sizeof(struct Hello));
+	hello->sayHello=sayHello;//这个结构体有多少个函数，就要在这个有多少个结构体内，函数指针指向函数的声明。
+	hello->sayHello("a");
+	return 0;
+}
+```
+
+- 使用void*保存节点值 , 多态 , 可保存不同类型的值
+
+参考资料: `算法:C语言实现` , `数据结构与算法分析:C语言描述` ` 算法导论`
+
+
+
+## 字典
+
+redis整个数据库就是一个键值对字典  ,也是哈希数据类型的底层实现
+
+```c
+//哈希表
+typedef struct dictht {
+ dicEntry **table; //哈希表数组
+ unsigned long size //哈希表大小
+ unsigned long sizemask // 哈希表大小掩码 , 用于计算索引值 , 总是等于size-1
+ ungined long used // 已有节点数
+} dictht
+
+//哈希表节点
+typedef struct dictEntry {
+ void *key
+ union {
+ void *val
+ uint64_tu64
+ int64_ts64
+ } v
+ struct dictEntry *next
+}
+
+// 字典
+typedef struct dict {
+dictType *type; // 类型特定函数
+void *privdata; //  私有数据
+dictht ht[2] // 0号哈希表和1号哈希表
+
+int trehashidx //rehash索引 , rehash不在进行时为-1
+}
+
+/*
+ * 字典类型特定函数
+ */
+typedef struct dictType {
+
+    // 计算哈希值的函数
+    unsigned int (*hashFunction)(const void *key);
+
+    // 复制键的函数
+    void *(*keyDup)(void *privdata, const void *key);
+
+    // 复制值的函数
+    void *(*valDup)(void *privdata, const void *obj);
+
+    // 对比键的函数
+    int (*keyCompare)(void *privdata, const void *key1, const void *key2);
+
+    // 销毁键的函数
+    void (*keyDestructor)(void *privdata, void *key);
+    
+    // 销毁值的函数
+    void (*valDestructor)(void *privdata, void *obj);
+
+} dictType;
+```
+
+
+
+使用链地址法(separate chaining)解决冲突 , 后到的会被分配到链表头部
+
+```c
+hash = dict->type->hashFunction(key);
+index = hash & dict->ht[x].sizemask = 8 & 3 =0; //书27页的例子
+```
+
+哈希算法为murmurhash2 / 3
+
+
+
+### rehash策略 
+
+维护负载因子(load factor): 哈希节点数量/哈希表大小
+
+对哈希表size进行扩容缩容
+
+ht[1]用于rehash
+
+扩容缩容策略: 29页
+
+![image-20190905133937619](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190905133937619.png)
+
+![image-20190905134208702](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190905134208702.png)
+
+![image-20190905134219942](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190905134219942.png)
+
+![image-20190905134308745](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190905134308745.png)
+
+
+
+渐进式rehash 和不停机mysql数据库扩容问题
+
+避免了一次性,集中式地扩容导致的服务器停止服务,而是分多次,渐进式完成
+
+书33页
+
+V2EX上看到的"双写机制" , 删改查ht[0]的某个key的同时会rehash到ht[1] , 增则只增加ht[1] , 由于会将ht[0]中已rehash的数据删除,  所以是先查ht[0] 不存在再查ht[1] , 和mysql扩容策略不同
+
+![image-20190905140202968](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190905140202968.png)
+
+
+
+## 跳跃表
+
+平均O(logn) 最坏O(n) , 媲美平衡树 , 不少程序都使用跳跃表代替平衡树 , 实现简单 , 支持顺序操作
+
+使用到的地方:
+
+有序集合zset
+
+集群节点的内部数据结构
+
+
+
+参考资料: 
+
+WilliamPugh的跳跃表论文 Skip Lists ......
+
+算法: C语言实现 1-4部分的13.5节
+
+
+
+## 整数集合
+
+用于只包含整数的集合的底层实现
+
+
+
+## 压缩列表
+
+列表和哈希的其中一种底层实现
+
+
+
+## 对象
+
+使用对象 , 根据场景和数据量级动态切换底层数据结构实现
+
+引用计数的内存回收
+
+引用计数实现对象共享 , 节省内存
+
+记录访问时间 , 用于LRU
+
+创建一个redis键会产生一个键对象,一个值对象
+
+type字段标识对象类型(字符串...列表...)
+
+一个指针指向底层数据结构
+
+可以用TYPE命令获取
+
+encoding字段说明底层数据结构的类型 , 使用OBJECT ENCODING获取
+
+有序集合同时使用了跳跃表和字典 , 分别支持O(1) 单点查找 , 范围查找
+
+相同的命令会通过值对象的编码方式选择底层设计结构 不同的实现 , 多态
+
+(DEL EXPIRE)一个命令可处理不同类型的键 , (LLEN)一个命令可处理不同的编码 , 两种多态
+
+每个对象会有个refcount引用计数
+
+redis的对象共享机制 , 如自动生成0-9999的整数对象的重用
+
+lru属性 : 最后一次被命令程序访问的时间 , 相关配置项: maxmemory , volatile-lru , allkeys-lru , maxmemory-policy
+
+
+
+## 数据库
+
+保存在redisServer结构的db数组中
+
+## RDB持久化
+
+RDB (Redis DataBase)
+
+保存二进制数据 , 类比mysql的binlog
+
+RDB文件结构 (书126页 ):
+
+![image-20190906102609864](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190906102609864.png)
+
+字符串使用了LZF算法进行压缩
+
+使用od -c 命令可以用ASCII编码打印RDB文件
+
+od -x 则为16进制打印 (10.4.1 )
+
+Redis-check-dump RDB文件检查工具
+
+
+
+## AOF
+
+AOF(Append Only File)
+
+保存已执行命令 , 类比mysql的
+
+redisServer结构的 aof_buf 缓冲区 , 是一个字符串 , 每条命令有固定格式以区分开
+
+redis的服务器进程是一个事件循环 , (类似NIO的进程/ IO模型? 看伪代码不像) ,  有时间事件和文件事件 , 时间事件处理定时执行的函数 , 文件事件接收客户端的命令请求
+
+
+
+![image-20190907102757866](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190907102757866.png)
+
+
+
+载入和还原AOF文件会通过一个伪客户端执行命令
+
+AOF重写不扫描AOF文件 , 而是扫描数据库 , 重新生成
+
+通过子进程进行AOF重写 , 不一致问题 , 也是类似"双写机制" , 会将主进程新产生的"写"命令放入AOF重写缓冲区 , 子进程完成AOF重写后会发送信号告知主进程 , 主进程再从缓冲区写入到AOF
+
+
+
+## 事件
+
+什么是Reactor模式
+
+IO多路复用
+
+单线程NIO模型 和Redis的简单设计原则
+
+IO多路复用的底层 select / epoll / evport / kqueue
+
+套接字队列
+
+![image-20190907144420336](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190907144420336.png)
+
+![image-20190907144428661](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190907144428661.png)
+
+
+
+一个套接字可能有多个事件可用 , 同时可读写的时候 : 先读再写
+
+可添加和删除某个套接字监听事件
+
+时间事件的抽象 : 3个属性 : id  , when , timeProc函数
+
+时间事件使用链表串起来
+
+![image-20190907144841659](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190907144841659.png)
+
+
+
+上面的每一种抽象 , 作者都对相关API进行了介绍 , 学习了
+
+
+
+serverCron函数做的事情
+
+![image-20190907145239852](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190907145239852.png)
+
+
+
+Pattern-Oriented Software Architecture Volume 4   , 11章的Reactor
+
+Linux System Programming Second Edition 第二章 Multiplexed I/O  第四章Event Poll
+
+Unix环境高级编程 第二版 14.5     IO多路复用相关
+
+
+
+## 客户端
+
+单进程单线程处理客户端命令请求
+
+使用链表把客户端 struct client 串起来 ?  不用数组的原因是增删O(1) ?
+
+发现server和client的结构体里都有一大堆属性 , 但是注释的很清晰
+
+
+
+输出缓冲区的可变大小缓冲区 , 一个链表 , 每个节点是SDS , 用到链表的地方很多
+
+输出缓冲区限制策略: 超过某个值直接关闭(硬性限制) ,  一定时间内超过某个值直接关闭(软性限制)
+
+
+
+## 服务器
+
+涉及网络编程的知识点 ( 建立连接 , IO多路复用 , 字节流解析 , 事件处理 )
+
+对命令的封装 redisCommand结构体
+
+LRU时间使用抽样统计 在serverCron函数中更新
+
+sigterm信号处理 , 不会立即关闭 , 会先进行RDB , 避免数据丢失
+
+初始化服务器和配置的代码和 写过的分布式crontab很像
+
+在netty源码 课程里听到的一个概念 , 循环 = 监听端口
+
+
+
+## 复制
+
+SLAVEOF命令
+
+复制功能分为 同步和命令传播 两部分
+
+(同步为一次全量操作
+
+命令传播为同步时间点之后主服务器的所有修改发送到从服务器) 这是另一个mysql不停机扩容策略 , 也是我当时面试回答的答案
+
+断线续复制的改进 : 旧版断了只能重新开始 , 新版会有个大小固定的队列 , 缓冲断开期间主服务器执行的命令 ,  当断开的服务器连上后 , 检查是否还能续上 , 可以就继续 , 否则依然进行完整重同步
+
+
+
+实现细节: 两个服务器各自的复制偏移量 , 主服务器的复制积压缓冲区 , 两个服务器的运行id
+
+通过合理的配置积压缓冲区的大小可以避免过多的完整重同步
+
+
+
+复制 : 主从建立套接字连接 , 从服务器是主服务器的客户端 , 
+
+使用PING PONG 进行应用层心跳检测
+
+![image-20190918105426076](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190918105426076.png)
+
+![image-20190918105532507](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190918105532507.png)
+
+复制的身份验证逻辑
+
+
+
+REPLCONF ACK 心跳检测策略的作用:
+
+检测网络连接状态
+
+辅助实现Min salve
+
+检测命令丢失 , 通过偏移量不一致确定
+
+![image-20190918105932141](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190918105932141.png)
+
+![image-20190918105946381](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190918105946381.png)
+
+
+
+## Sentinel 哨兵
+
+高可用性解决方案 , 类似nginx的master / worker , master只负责管理worker , 不处理用户请求
+
+故障转移 failover 策略
+
+leader / follower 选举策略
+
+主服务器挂掉后 , 会选出一个从服务器成为新的主服务器 , 
+
+Sentinel 只是一个运行在特殊模式下的Redis服务器 , 同样使用RedisServer结构体 , 但部分 配置如载入RDB和AOF 之类不会初始化
+
+使用端口26379  定义在sentinel.c/REDIS_SENTINEL_PORT
+
+命令列表为sentinel.c/sentinelcmds
+
+关键结构:
+
+![image-20190918111415690](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190918111415690.png)
+
+![image-20190918111500796](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190918111500796.png)
+
+sentinel和每个master创建两个异步连接
+
+![image-20190918111703278](https://github.com/carlclone/Tech-Note/blob/master/imgs/image-20190918111703278.png)
+
+每10秒一次的频率发送INFO命令到master , 实现监视 , 并获取关联从服务器的信息 , 建立关联从服务器instance列表 , 
+
+
+
+sentinel 和sentinel之间的连接 , 交互
+
+
+
+使用PING PONG协议检测在线情况
+
+
+
+主服务器下线故障转移:
+
+多个sentinel的情况 : 先协商选举出领头sentinel , 负责执行故障转移
+
+领头选举策略:
+
+要求 n/2 +1 票
+
+选举通过发出自己的id到其他sentinel , 先到的成为局部领头 , 最后统计最高票数的成为全局领头
+
+小于n/2+1票 , 重新选举
+
+查看Raft算法机制 , Raft视频或论文
+
+
+
+
+
+
+
+
+
+## redis事务的设计
+
+
+
+阶段： 事务开始（MULTI），命令入队，事务执行
+
+
+
+事务开始： 切换该客户端的flags属性为事务状态 , 使用了二进制操作 |= , 该flags属性可以同时表示多个状态
+
+![image-20191019160640242](/Users/mojave/Tech-Note/imgs/Redis 设计与实现 第二遍笔记/image-20191019160640242.png)
+
+接着，除了（EXEC，DISCARD，WATCH，MULTI）命令外的命令都会被放入一个队列 ， 然后回复客户端”QUEUED“
+
+
+
+事务状态的数据结构multiState
+
+
+
+![image-20191019160853312](/Users/mojave/Tech-Note/imgs/Redis 设计与实现 第二遍笔记/image-20191019160853312.png)
+
+
+
+![image-20191019161618458](/Users/mojave/Tech-Note/imgs/Redis 设计与实现 第二遍笔记/image-20191019161618458.png)
+
+
+
+
+
+### WATCH命令
+
+乐观锁，假设冲突的情况很少，所以在执行的时候才检查
+
+![image-20191019161912770](/Users/mojave/Tech-Note/imgs/Redis 设计与实现 第二遍笔记/image-20191019161912770.png)
+
+
+
+watch功能的设计：
+
+保存在redisDb数据结构的watched_keys字典中 ， 字典的k是数据库健，值是在watch的客户端链表
+
+
+
+
+
+![image-20191019162557463](/Users/mojave/Tech-Note/imgs/Redis 设计与实现 第二遍笔记/image-20191019162557463.png)
+
+
+
+redis实现的事务对ACID的遵循情况：
+
+原子性 支持
+
+回滚机制 不支持 ， 其中一个命令执行错误会继续执行
+
+一致性 ， 指的是数据符合数据库本身的定义和要求，没有包含非法或者无效的错误数据 ， 个人认为由于没有回滚机制，所以一致性会遭到破坏
+
+
+
+一致性在发生错误的时候被破坏，因此需要做错误检测和相关恢复
+
+ 执行错误，需要回滚机制的支持
+
+服务器错误，需要持久化(RDB,AOF)支持
+
+隔离性，多个事务并发执行，和串行执行的结果一致，各个事务不会 互相影响 ， redis是单线程执行事务的，支持
+
+耐久性，事务执行完毕之后停机，结果也不会丢失，持久化保证，支持 ， 不同配置的持久化支持程度不同， 要求第一时间的持久化
+
+
+
+参考： 维基百科ACID ， 《数据库系统实现》第六章《系统故障对策》 ， Redis官网的《事务》文档
+
+
+
+
+
+![image-20191019163206469](/Users/mojave/Tech-Note/imgs/Redis 设计与实现 第二遍笔记/image-20191019163206469.png)
