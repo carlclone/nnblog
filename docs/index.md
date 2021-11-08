@@ -1,12 +1,17 @@
 
 ## About me
 
- Web 开发者 || 自行车爱好者 || 兴趣是学习基础软件的实现
+ 后端开发 || 自行车 || 学习基础软件的实现
   
-  [Github](https://github.com/carlclone) || [Leetcode](https://leetcode.com/carlclone/) || [Jianshu](https://www.jianshu.com/u/baea2de7cc1a) || [LaravelChina](https://learnku.com/blog/carlclone)
+  [Github](https://github.com/carlclone) 
+  
+
   
 
 <!--
+
+|| [Leetcode](https://leetcode.com/carlclone/) || [Jianshu](https://www.jianshu.com/u/baea2de7cc1a) || [LaravelChina](https://learnku.com/blog/carlclone)
+
 ## 内容摘要
 
 - [课程 Labs](./labs/csapp-proxy.md): 做过的一些有意思的编程 Lab 的总结记录

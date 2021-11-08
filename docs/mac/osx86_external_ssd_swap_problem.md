@@ -1,27 +1,17 @@
----
-title: 外部SSD macOS的SWAP分区开启问题
-tags: mac
-date: 2019-03-09 14:57:31
----
+# 外部SSD macOS的SWAP分区开启问题
 
-&nbsp;
-
-<!-- more -->
-
-博客成了我整理杂乱笔记的地方了
-
-# 问题
+## 问题
 公司电脑只有8G内存,打开大量网页的时候爆内存,黑苹果卡住
 
-# 原因
-由于自己的黑苹果安装在外接的SSD硬盘上,通过USB接口连接,在mac中被识别为External Storage , 因此无法mount swap分区 , 相当于模式1 , 只使用内存和部分Cache , 一爆内存就死机
+## 原因
+由于自己的黑苹果安装在外接的SSD硬盘上,通过USB接口连接,在mac中被识别为External Storage , 因此无法mount swap分区 , 相当于模式1 , 只使用内存 (为什么没有 OOM Killer 机制) , 一爆内存就死机
 
-# 解决
+## 解决
 开机的时候强制mount ,添加启动脚本到/Library/LaunchDaemons/
 
 ![image-20191120140931373](/img/osx86_swap_sloved.jpg)
 
-## 参考 Stack Exchange
+### 参考 Stack Exchange
 https://apple.stackexchange.com/questions/318266/mac-os-x-is-not-creating-a-swap-file
 
 ```
@@ -78,7 +68,7 @@ Solution:
 42. Reboot your Mac 
 ```
 
-# 彩蛋
+## 彩蛋
 
 附上一份macOS的成长历史
 

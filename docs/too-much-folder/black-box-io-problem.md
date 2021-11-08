@@ -1,0 +1,148 @@
+# 黑盒排查磁盘空间告警/IO问题
+
+当时遇到这问题的时候自己是熟悉对应项目的, 后续想到如果代码不是自己写的,对项目也不熟悉,该如何排查此类 IO 问题?
+
+## 问题描述
+
+服务器磁盘空间告警,接近爆满
+
+## 黑盒排查
+
+`df -h` 查看挂载空间情况
+
+### 思路一
+观察指标,找出占用 IO 的进程打开的文件列表 或查看系统调用在写的文件路径
+
+- `top` 查看服务器 cpu , 内存 , 网络 , IO 情况  , 定位到 cpu 的 iowait 较高 ,同时内存部分的 buff/cache 比较高(和文件读写有关)
+- iowait 不能完全确定 io 高 (iowait的产生要满足两个条件，一是进程在等io，二是等io时没有进程可运行) , 再使用 `iostat -x -d 1 ` 观察系统详细 IO 信息 ,每秒读写量 , 确认写入占用很高
+- `pidstat -d 1` 查看各个进程的具体磁盘 IO 情况, 找出写入大的进程,记下 pid 18940  (kworker 和jbd2是文件系统内核线程,可以先不管) 
+- `strace -p 18940` 查看进程系统调用, 主要是 write 和 stat 调用,定位文件路径
+- 或使用 `lsof -p 18940` 查看进程打开文件列表 , 文件也包括目录、块设备、动态库、网络套接字等。
+- 定位到日志文件,项目,查阅日志文件发现 INFO 级别也被打印
+- 框架支持动态调整日志级别,改为 WARNING `kill -SIGUSR2 18940`
+- 再观察 `top` 和 `iostat`
+
+```
+# 按1切换到每个CPU的使用情况 
+$ top 
+top - 14:43:43 up 1 day,  1:39,  2 users,  load average: 2.48, 1.09, 0.63 
+Tasks: 130 total,   2 running,  74 sleeping,   0 stopped,   0 zombie 
+%Cpu0  :  0.7 us,  6.0 sy,  0.0 ni,  0.7 id, 92.7 wa,  0.0 hi,  0.0 si,  0.0 st 
+%Cpu1  :  0.0 us,  0.3 sy,  0.0 ni, 92.3 id,  7.3 wa,  0.0 hi,  0.0 si,  0.0 st 
+KiB Mem :  8169308 total,   747684 free,   741336 used,  6680288 buff/cache 
+KiB Swap:        0 total,        0 free,        0 used.  7113124 avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND 
+18940 root      20   0  656108 355740   5236 R   6.3  4.4   0:12.56 python 
+1312 root      20   0  236532  24116   9648 S   0.3  0.3   9:29.80 python3 
+```
+
+```
+# -d表示显示I/O性能指标，-x表示显示扩展统计（即所有I/O指标） 
+$ iostat -x -d 1 
+Device            r/s     w/s     rkB/s     wkB/s   rrqm/s   wrqm/s  %rrqm  %wrqm r_await w_await aqu-sz rareq-sz wareq-sz  svctm  %util 
+loop0            0.00    0.00      0.00      0.00     0.00     0.00   0.00   0.00    0.00    0.00   0.00     0.00     0.00   0.00   0.00 
+sdb              0.00    0.00      0.00      0.00     0.00     0.00   0.00   0.00    0.00    0.00   0.00     0.00     0.00   0.00   0.00 
+sda              0.00   64.00      0.00  32768.00     0.00     0.00   0.00   0.00    0.00 7270.44 1102.18     0.00   512.00  15.50  99.20
+```
+
+```
+$ pidstat -d 1 
+
+15:08:35      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command 
+15:08:36        0     18940      0.00  45816.00      0.00      96  python 
+
+15:08:36      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command 
+15:08:37        0       354      0.00      0.00      0.00     350  jbd2/sda1-8 
+15:08:37        0     18940      0.00  46000.00      0.00      96  python 
+15:08:37        0     20065      0.00      0.00      0.00    1503  kworker/u4:2 
+```
+
+```
+$ strace -p 18940 
+strace: Process 18940 attached 
+...
+mmap(NULL, 314576896, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f0f7aee9000 
+mmap(NULL, 314576896, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f0f682e8000 
+write(3, "2018-12-05 15:23:01,709 - __main"..., 314572844 
+) = 314572844 
+munmap(0x7f0f682e8000, 314576896)       = 0 
+write(3, "\n", 1)                       = 1 
+munmap(0x7f0f7aee9000, 314576896)       = 0 
+close(3)                                = 0 
+stat("/tmp/logtest.txt.1", {st_mode=S_IFREG|0644, st_size=943718535, ...}) = 0 
+```
+
+```
+$ lsof -p 18940 
+COMMAND   PID USER   FD   TYPE DEVICE  SIZE/OFF    NODE NAME 
+python  18940 root  cwd    DIR   0,50      4096 1549389 / 
+python  18940 root  rtd    DIR   0,50      4096 1549389 / 
+… 
+python  18940 root    2u   CHR  136,0       0t0       3 /dev/pts/0 
+python  18940 root    3w   REG    8,1 117944320     303 /tmp/logtest.txt 
+```
+
+### 思路二
+产生了大文件,搜索大于 800M 的文件 
+
+- `find . -type f -size +800M  -print0 | xargs -0 du -h`
+- 定位到某个项目的 log 文件
+- 查看日志内容
+- 检查代码对应打日志位置
+- 删除或迁移日志文件 `rm ...` 或`mv ...`  , 如果文件被其他进程使用中,还需要`sudo lsof -n |grep deleted` 找到对应进程,重启或 kill
+
+## 模拟复现
+
+`docker run -v /tmp:/tmp --name=app -itd feisky/logapp`
+
+```
+$ ps -ef | grep /app.py 
+root     18940 18921 73 14:41 pts/0    00:00:02 python /app.py 
+```
+
+```
+
+#拷贝案例应用源代码到当前目录
+$ docker cp app:/app.py . 
+
+#查看案例应用的源代码 https://github.com/feiskyer/linux-perf-examples/tree/master/logging-app
+$ cat app.py 
+
+logger = logging.getLogger(__name__) 
+logger.setLevel(level=logging.INFO) 
+rHandler = RotatingFileHandler("/tmp/logtest.txt", maxBytes=1024 * 1024 * 1024, backupCount=1) 
+rHandler.setLevel(logging.INFO) 
+
+def write_log(size): 
+  '''Write logs to file''' 
+  message = get_message(size) 
+  while True: 
+    logger.info(message) 
+    time.sleep(0.1) 
+
+if __name__ == '__main__': 
+  msg_size = 300 * 1024 * 1024 
+  write_log(msg_size) 
+```
+
+```
+
+def set_logging_info(signal_num, frame): 
+  '''Set loging level to INFO when receives SIGUSR1''' 
+  logger.setLevel(logging.INFO) 
+
+def set_logging_warning(signal_num, frame): 
+  '''Set loging level to WARNING when receives SIGUSR2''' 
+  logger.setLevel(logging.WARNING) 
+
+signal.signal(signal.SIGUSR1, set_logging_info) 
+signal.signal(signal.SIGUSR2, set_logging_warning) 
+```
+
+`docker rm -f app`
+
+
+## 参考资料
+- [linux 性能优化实战 - 找出狂打日志的内鬼](https://time.geekbang.org/column/article/77885)
+- [记一次生产事故-磁盘被占满](https://www.cnblogs.com/gcdd1993/p/12292422.html)
