@@ -33,7 +33,8 @@ DNS 的查询方式
 
   
 
-其他排查思路参考
+### 其他排查思路参考
+
 - 检查本地hosts：`cat /etc/hosts`
 - 检查resolv.conf文件：`cat /etc/resolv.conf`。在redhat7/centos7上修改resolv.conf里的DNS地址后，重启启网络服务发现DNS地址消失了，那么检查下网卡配置文件。
 - 检查网卡配置文件： `cat /etc/sysconfig/network-scripts/ifcfg-<网卡名称>`，看下里头有没DNS配置信息，没有的话补上去。
@@ -153,43 +154,48 @@ iptables -I INPUT -p tcp --dport 80 --syn -m recent --name SYN_FLOOD --update --
 
 注: 模拟分布式攻击 : hping3 的 `--rand-souce`
 
-- tcp 优化手段
+#### tcp 优化手段
+  
+提高半连接队列大小
 
-  - 提高半连接队列大小
 
-  ```
+```
   sysctl net.ipv4.tcp_max_syn_backlog 
   net.ipv4.tcp_max_syn_backlog = 256    # 当前为 256
   
   sysctl -w net.ipv4.tcp_max_syn_backlog=1024 # 修改为 1024
   
-  ```
+```
 
-  - 减少 SYN_REC 状态时的重试次数
 
-    ```
+减少 SYN_REC 状态时的重试次数
+
+
+```
     $ sysctl -w net.ipv4.tcp_synack_retries=1 
-    ```
+```
 
-  - 使用 syn cookie
+使用 syn cookie
 
-  ```
+
+```
   # 开启后半连接限制会失效 ( 因为 syn cookie 没有半连接了)
   # 最后一次握手 ACK 使用 cookie 确认后才建立连接
   
   $ sysctl -w net.ipv4.tcp_syncookies=1 
-  ```
+```
 
   
 
-  - 配置持久化生效
+配置持久化生效
 
-  ```
+
+```
   $ cat /etc/sysctl.conf net.ipv4.tcp_syncookies = 1 net.ipv4.tcp_synack_retries = 1 net.ipv4.tcp_max_syn_backlog = 1024
   
   sysctl -p 命令后，才会动态生效
   
-  ```
+```
 
 
 
@@ -219,17 +225,16 @@ iptables -I INPUT -p tcp --dport 80 --syn -m recent --name SYN_FLOOD --update --
 
 ## 并发高时请求延迟变大问题
 
-- 如何测单次网络延迟
+### 如何测单次网络延迟
+- `ping`
+- `hping3 -c 3 -S -p 80 baidu.com` icmp 被禁时, 使用
+- `traceroute --tcp -p 80 -n baidu.com`  原理是向每一跳发送限制 TTL 的三个请求, 获得响应计算往返时间 , 星号表示超时或无响应  [traceroute 原理](https://www.jianshu.com/p/75a5822d0eec)
 
-  `ping` 
+### 如何测并发时的延迟
 
-  `hping3 -c 3 -S -p 80 baidu.com` icmp 被禁时, 使用
-
-  `traceroute --tcp -p 80 -n baidu.com`  原理是向每一跳发送限制 TTL 的三个请求, 获得响应计算往返时间 , 星号表示超时或无响应  [traceroute 原理](https://www.jianshu.com/p/75a5822d0eec)
-
-- 如何测并发时的延迟
-
-wrk 安装 (类似 ab 的压测工具)
+- wrk 
+  
+安装 (类似 ab 的压测工具)
 
 ```
 $ https://github.com/wg/wrk
