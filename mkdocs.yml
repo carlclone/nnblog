@@ -14,15 +14,6 @@ extra_javascript:
 #  - https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js
 nav:
   - 主页: index.md
-  - 重要提醒记录: too-much-folder/important-phase.md
-# step: golox , simpledb , xv6 , zk , etcd , and others
-#  - sports
-#      - bicycle Yinhu Mountain 15KM/H
-#      - bao'an park 10KM , 6 minute/km
-#  - 其他:
-#      - can write syscall be interrupted ?: /asd.md
-#      - 文件管理的方式(参考lox array 的作者博客): /asd.md
-# Go 虚拟内存为什么占用特别多
   - 问题排查 / 性能优化:
       - mac 网易云音乐 cpu 占用高问题排查: too-much-folder/netease-music-problem.md
       - mac Notes.app 卡死问题: mac/mac-note-stalled.md
@@ -34,10 +25,47 @@ nav:
       - 黑盒排查磁盘空间告警/IO问题: too-much-folder/black-box-io-problem.md
       - cpu 排查的几个案例: too-much-folder/black-box-cpu-high-problem.md
       - network 排查的几个案例: too-much-folder/black-box-network-problem.md
-      - 数据库两种死锁场景复现和排查: too-much-folder/db-deadlock.md
 
-      - 问题排查-性能优化速查表汇总: too-much-folder/troubleshooting-cheatsheet.md
-      - 问题排查常用工具的实现原理: too-much-folder/troubleshooting-tools-dig-deep.md
+          # 延后
+          #      - 数据库两种死锁场景复现和排查: too-much-folder/db-deadlock.md
+          #      - 问题排查-性能优化速查表汇总: too-much-folder/troubleshooting-cheatsheet.md
+          #      - 问题排查常用工具的实现原理: too-much-folder/troubleshooting-tools-dig-deep.md
+          #  - 重要提醒记录: too-much-folder/important-phase.md
+#      - singleflight 和 workerpool 优化代码 : too-much-folder/singleflight-workerpool.md
+#      - go http client 参数优化: too-much-folder/go-http-client-config.md
+#      - tcp linux 参数优化: too-much-folder/tcp-linux-config.md
+#      - zookeeper 对比我的 raft kv 实现: too-much-folder/zookeeper-vs-raft-kv.md
+
+          # step: golox , simpledb , xv6 , zk , etcd , and others
+          #  - sports
+          #      - bicycle Yinhu Mountain 15KM/H
+          #      - bao'an park 10KM , 6 minute/km
+          #  - 其他:
+          #      - can write syscall be interrupted ?: /asd.md
+          #      - 文件管理的方式(参考lox array 的作者博客): /asd.md
+#  - 运动/游戏:
+#        - 一台现代公路车的构成: sport/modern-bicycle-composition.md
+#        - 如何跑步: sport/run-the-right-way.md
+#        - 作为一个懒人如何跟上饮食: sport/eat.md
+#        - 深圳爬坡路线汇总: sport/shenzhen-mountain.md
+#        - 手残党如何打上 LOL 钻石: sport/lol-diamond.md
+#  - go 源码阅读:
+#        - go http client 深挖: too-much-folder/go-http-client-dig-deep.md
+#        - etcd 的 watch 实现: too-much-folder/etcd-watch.md
+#        - 锁在 etcd 中的实现: too-much-folder/etcd-watch.md
+            #      - http client and retryable http client: /asd.md
+            #      - copier: /asd.md
+            #      - singleflight: /asd.md
+            #      - serveHTTP , listenAndServe: /asd.md
+            #  - Go concurrency programming:
+            #      - concurrent read/write map bug: /asd.md
+            #  - distributed system:
+            #      - etcd: /asd.md
+            #      - zk: /asd.md
+            #      - spanner
+            #  - t100liked
+            #  - problem-solve / math
+            #      - 3blue1brown - youtube - problem solve
 
 
 
@@ -48,59 +76,31 @@ nav:
 #      - 服务器 CPU 检查手册: too-much-folder/black-box-cpu-problem.md
           #- 网络问题排查的一般思路: too-much-folder/network-problem-general-shooting.md
 
-      - singleflight 和 workerpool 优化代码 : too-much-folder/singleflight-workerpool.md
-      - go http client 参数优化: too-much-folder/go-http-client-config.md
-      - tcp linux 参数优化: too-much-folder/tcp-linux-config.md
-      - zookeeper 对比我的 raft kv 实现: too-much-folder/zookeeper-vs-raft-kv.md
 
-  - 运动/游戏:
-      - 一台现代公路车的构成: sport/modern-bicycle-composition.md
-      - 如何跑步: sport/run-the-right-way.md
-      - 作为一个懒人如何跟上饮食: sport/eat.md
-      - 深圳爬坡路线汇总: sport/shenzhen-mountain.md
-      - 手残党如何打上 LOL 钻石: sport/lol-diamond.md
 
-#  - 性能优化:
-  - go 源码阅读:
-      - go http client 深挖: too-much-folder/go-http-client-dig-deep.md
-      - etcd 的 watch 实现: too-much-folder/etcd-watch.md
-      - 锁在 etcd 中的实现: too-much-folder/etcd-watch.md
-#      - http client and retryable http client: /asd.md
-#      - copier: /asd.md
-#      - singleflight: /asd.md
-#      - serveHTTP , listenAndServe: /asd.md
-#  - Go concurrency programming:
-#      - concurrent read/write map bug: /asd.md
-#  - distributed system:
-#      - etcd: /asd.md
-#      - zk: /asd.md
-#      - spanner
-#  - t100liked
-#  - problem-solve / math
-#      - 3blue1brown - youtube - problem solve
   - labs:
-      - golox - Scanner: labs/golox/scanner.md
-      - golox - Parser: labs/golox/parser.md
-      - golox - Resolver: labs/golox/resolver.md
-      - golox - Intepreter: labs/golox/interpreter.md
-      - simpledb - HeapFileRead and SeqScan: labs/simpledb/heapfile-read-and-seqscan.md
-      - simpledb - Operators: labs/simpledb/operators.md
-      - simpledb - Query Optimization: labs/simpledb/query-optimization.md
+#      - golox - Scanner: labs/golox/scanner.md
+#      - golox - Parser: labs/golox/parser.md
+#      - golox - Resolver: labs/golox/resolver.md
+#      - golox - Intepreter: labs/golox/interpreter.md
+#      - simpledb - HeapFileRead and SeqScan: labs/simpledb/heapfile-read-and-seqscan.md
+#      - simpledb - Operators: labs/simpledb/operators.md
+#      - simpledb - Query Optimization: labs/simpledb/query-optimization.md
 #      - simpledb - Lock Manager and Concurrency Manager: labs/simpledb/lock-and-concurrency.md
-      - xv6 - utils: labs/xv6/utils.md
-      - xv6 - syscall: labs/xv6/syscall.md
+#      - xv6 - utils: labs/xv6/utils.md
+#      - xv6 - syscall: labs/xv6/syscall.md
       #      - xv6 - page table: labs/xv6/page-table.md
       - MIT 6.824 - MapReduce: labs/6824-mapreduce.md
       - MIT 6.824 - Raft: labs/6824-raft.md
       - MIT 6.824 - KV: labs/6824-kv.md
       - CSAPP - Shell: labs/csapp-shell.md
       - CSAPP - Proxy: labs/csapp-proxy.md
-      - beargit: labs/zombie-beargit.md
+#      - beargit: labs/zombie-beargit.md
       - CS144: labs/cs144.md
-      - CS144-lab0: labs/cs144.md
-      - CS144-lab1: labs/cs144.md
-      - CS144-lab2: labs/cs144.md
-      - CS144-lab3: labs/cs144.md
+#      - CS144-lab0: labs/cs144.md
+#      - CS144-lab1: labs/cs144.md
+#      - CS144-lab2: labs/cs144.md
+#      - CS144-lab3: labs/cs144.md
 #      - CS144: labs/cs144-lab4-rework.md
 #      - CS144: labs/cs144-lab5.md
 #      - CS144: labs/cs144-lab6.md
@@ -122,13 +122,13 @@ nav:
       - 整数转二进制字符串: algos/int-to-binary-str.md
       - 多字段排序: algos/multiple-field-sort.md
       - LRU 线程安全和高并发: algos/lru-cache-go.md
-      - t100-0x-asd: algos/t100-0x-asd.md
+#      - t100-0x-asd: algos/t100-0x-asd.md
 #      - 一维数组 parent child 转多维树状数组: asd.md
 #      - 抖音那道树题: asd.md
-  - 数学/逻辑:
-      - 和波利亚学解题: problem-solve/learn-problem-solve-with-polya.md
-      - 计数和概率: problem-solve/probability.md
-      - 逻辑: problem-solve/逻辑智力题.md
+#  - 数学/逻辑:
+#      - 和波利亚学解题: problem-solve/learn-problem-solve-with-polya.md
+#      - 计数和概率: problem-solve/probability.md
+#      - 逻辑: problem-solve/逻辑智力题.md
   - 构建自己的 X 项目:
       - 构建自己的 jQuery: build-my-own-x/jquery.md
       - 构建自己的 PHP 框架: build-my-own-x/php-framework.md
