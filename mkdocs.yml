@@ -32,23 +32,33 @@ nav:
       - 使用 pprof 排查内存泄漏: too-much-folder/go-pprof-memory-leak.md
       - 数据库 metadata lock 问题排查: too-much-folder/db-metadatalock.md
       - 黑盒排查磁盘空间告警/IO问题: too-much-folder/black-box-io-problem.md
-      - cpu 排查的四个案例: too-much-folder/black-box-cpu-high-problem.md
+      - cpu 排查的几个案例: too-much-folder/black-box-cpu-high-problem.md
       - network 排查的几个案例: too-much-folder/black-box-network-problem.md
-      - 数据库两种死锁场景复现: too-much-folder/db-deadlock.md
-      - 问题排查速查表汇总: too-much-folder/troubleshooting-cheatsheet.md
-#      - 数据库选错索引问题一例: too-much-folder/db-wrong-index.md
+      - 数据库两种死锁场景复现和排查: too-much-folder/db-deadlock.md
 
-      # 黑盒查CPU 占用高 QPS 问题
+      - 问题排查-性能优化速查表汇总: too-much-folder/troubleshooting-cheatsheet.md
+      - 问题排查常用工具的实现原理: too-much-folder/troubleshooting-tools-dig-deep.md
 
-      # 必须要复现 (废弃)
+
+
+      #  (废弃)
+          #      - 数据库选错索引问题一例: too-much-folder/db-wrong-index.md
+          # 黑盒查CPU 占用高 QPS 问题
 #      - 服务器内存检查手册: too-much-folder/black-box-memory-problem.md
 #      - 服务器 CPU 检查手册: too-much-folder/black-box-cpu-problem.md
+          #- 网络问题排查的一般思路: too-much-folder/network-problem-general-shooting.md
 
-      #- 网络问题排查的一般思路: too-much-folder/network-problem-general-shooting.md
       - singleflight 和 workerpool 优化代码 : too-much-folder/singleflight-workerpool.md
       - go http client 参数优化: too-much-folder/go-http-client-config.md
       - tcp linux 参数优化: too-much-folder/tcp-linux-config.md
       - zookeeper 对比我的 raft kv 实现: too-much-folder/zookeeper-vs-raft-kv.md
+
+  - 运动/游戏:
+      - 一台现代公路车的构成: sport/modern-bicycle-composition.md
+      - 如何跑步: sport/run-the-right-way.md
+      - 作为一个懒人如何跟上饮食: sport/eat.md
+      - 深圳爬坡路线汇总: sport/shenzhen-mountain.md
+      - 手残党如何打上 LOL 钻石: sport/lol-diamond.md
 
 #  - 性能优化:
   - go 源码阅读:
