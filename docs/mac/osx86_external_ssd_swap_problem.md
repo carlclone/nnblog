@@ -70,7 +70,7 @@ Solution:
 
 ## 彩蛋
 
-附上一份macOS的成长历史
+附上一份macOS的版本历史
 
 |Version |Codename |﻿Most recent version |
 |--- |--- |--- |

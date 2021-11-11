@@ -14,27 +14,42 @@ extra_javascript:
 #  - https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js
 nav:
   - 主页: index.md
-  - 问题排查 / 性能优化:
+  - 问题排查 :
       - mac 网易云音乐 cpu 占用高问题排查: too-much-folder/netease-music-problem.md
       - mac Notes.app 卡死问题: mac/mac-note-stalled.md
       - mac 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
       - go shadowing variable 造成的歧义: too-much-folder/go-shadowing-variable.md
       - go 并发读写 map 问题一例: too-much-folder/go-concurrent-map-read-write-bug.md
+      - go bytebufferpool 错误使用一例: too-much-folder/go-bytebufferpool-leak-doubt.md
       - 使用 pprof 排查内存泄漏: too-much-folder/go-pprof-memory-leak.md
       - 数据库 metadata lock 问题排查: too-much-folder/db-metadatalock.md
       - 黑盒排查磁盘空间告警/IO问题: too-much-folder/black-box-io-problem.md
       - cpu 排查的几个案例: too-much-folder/black-box-cpu-high-problem.md
       - network 排查的几个案例: too-much-folder/black-box-network-problem.md
+      - 间隙锁造成的死锁: too-much-folder/db-deadlock.md
+        #      - time-wait 排查一例: too-much-folder/time-wait-problem.md
+#      - tcp哪些状态数量异常容易造成问题 排查方式 优化方式: too-much-folder/db-deadlock.md
+        #      - 问题排查速查表汇总: too-much-folder/troubleshooting-cheatsheet.md
+
+#  -  性能优化 :
+#          - singleflight 和 workerpool 优化代码 : too-much-folder/singleflight-workerpool.md
+#          - go http client 参数优化: too-much-folder/go-http-client-config.md
+#          - tcp linux 参数优化: too-much-folder/tcp-linux-config.md
+#          - zookeeper 对比我的 raft kv 实现: too-much-folder/zookeeper-vs-raft-kv.md
+#  - go 源码阅读:
+#          - go http client : too-much-folder/go-http-client-dig-deep.md
+#          - etcd 的 watch 实现: too-much-folder/etcd-watch.md
+#          - 锁在 etcd 中的实现: too-much-folder/etcd-watch.md
+
+
+
 
           # 延后
-          #      - 数据库两种死锁场景复现和排查: too-much-folder/db-deadlock.md
-          #      - 问题排查-性能优化速查表汇总: too-much-folder/troubleshooting-cheatsheet.md
+            #          - atomic 在 go 中的使用  , 为什么用了? 因为 int64 操作可能不是原子的
+            #          - 连接池使用注意事项: too-much-folder/tcp-linux-config.md
+#  -  算法 用问题排查和性能优化的角度做 :
           #      - 问题排查常用工具的实现原理: too-much-folder/troubleshooting-tools-dig-deep.md
           #  - 重要提醒记录: too-much-folder/important-phase.md
-#      - singleflight 和 workerpool 优化代码 : too-much-folder/singleflight-workerpool.md
-#      - go http client 参数优化: too-much-folder/go-http-client-config.md
-#      - tcp linux 参数优化: too-much-folder/tcp-linux-config.md
-#      - zookeeper 对比我的 raft kv 实现: too-much-folder/zookeeper-vs-raft-kv.md
 
           # step: golox , simpledb , xv6 , zk , etcd , and others
           #  - sports
@@ -49,10 +64,6 @@ nav:
 #        - 作为一个懒人如何跟上饮食: sport/eat.md
 #        - 深圳爬坡路线汇总: sport/shenzhen-mountain.md
 #        - 手残党如何打上 LOL 钻石: sport/lol-diamond.md
-#  - go 源码阅读:
-#        - go http client 深挖: too-much-folder/go-http-client-dig-deep.md
-#        - etcd 的 watch 实现: too-much-folder/etcd-watch.md
-#        - 锁在 etcd 中的实现: too-much-folder/etcd-watch.md
             #      - http client and retryable http client: /asd.md
             #      - copier: /asd.md
             #      - singleflight: /asd.md

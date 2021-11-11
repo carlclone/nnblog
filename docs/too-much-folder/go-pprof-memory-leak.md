@@ -2,9 +2,7 @@
 
 ## 问题描述
 
-后台系统偶尔会出现 500 无法服务的问题然后自动重启,通过服务器查看日志得知被 OOM kill 掉了,内存是一定够用的,所以当做内存泄漏问题排查
-
-
+一个内部系统偶尔会出现 500 无法服务的问题然后自动重启,通过服务器查看日志得知被 OOM kill 掉了
 
 ## pprof 介绍
 
@@ -104,15 +102,15 @@ func GetBetweenDates(sdate, edate string) []string {
 
 ## 内存指标查阅
 
-- top/free -h 查看整体内存,各进程内存情况
-- vmstat 3 查看整体内存变化趋势 
-- memleak 查看某进程内存分配请求的地址 , 大小 `/usr/share/bcc/tools/memleak -a -p $(pidof app)`
-- pidstat -r -p 13084 查看进程内存情况
+- `top/free -h` 查看整体内存,各进程内存情况
+- `vmstat 3` 查看整体内存变化趋势 
+- `memleak` 查看某进程内存分配请求的地址 , 大小 `/usr/share/bcc/tools/memleak -a -p $(pidof app)`
 ```
 -a 表示显示每个内存分配请求的大小和地址
 -p 指定 pid
 容器里运行的程序会看不到调用栈,需要把程序的二进制文件复制到宿主机对应的目录上 (参考 linux 性能优化实战 18)
 ```
+- pidstat -r -p 13084 查看进程内存情况
 
 - sysstat 软件包安装 `sudo apt-get install -y sysstat`
 - bcc 软件包安装
@@ -135,4 +133,6 @@ sudo apt-get install bcc-tools libbcc-examples linux-headers-$(uname -r)
 ## 后续
 
 观察到 Go 程序的一个现象,VIRT 列(虚拟内存) 特别高,虽然不影响,但还是好奇查阅了一下,参考这篇文章 [go 虚拟内存为什么这么大](https://blog.csdn.net/EDDYCJY/article/details/109475941)
+
+虚拟内存在某个瞬间突然增长到非常大 (4G) ? 复现看看
 

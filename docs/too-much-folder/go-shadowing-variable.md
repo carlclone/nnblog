@@ -43,17 +43,16 @@ Goland : 开启probable bug inspection , 并修改为 error 级别警告 , 修�
 
 # 参考资料
 
-[lox : resolving-and-binding](https://craftinginterpreters.com/resolving-and-binding.html)
-
-[Go 语言项目开发实战-代码检查：如何进行静态代码检查？](https://time.geekbang.org/column/article/390401)
+- [lox : resolving-and-binding](https://craftinginterpreters.com/resolving-and-binding.html)
+- [Go 语言项目开发实战-代码检查：如何进行静态代码检查？](https://time.geekbang.org/column/article/390401)
 
 
 
 ## 后续
-其他代码检查工具
+其他代码工具
 
-- 并发检查 go run -race
+- go run -race 并发检查
 - go test
-- go vet
+- go vet 静态检查
 - gofmt
 

@@ -1,7 +1,7 @@
 
 ## About me
 
- 后端开发 || 自行车 / 跑步 || 学习基础软件的实现
+ 后端 || 自行车 || 学习基础软件的实现 || troubleshooting / performance
   
   [Github](https://github.com/carlclone) 
   

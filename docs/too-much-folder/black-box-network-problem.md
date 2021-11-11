@@ -1,12 +1,6 @@
 # network 排查的几个案例
 
-
-
-
-
 ## DNS 解析失败或解析慢
-
-
 
 ### DNS 介绍
 
@@ -100,6 +94,7 @@ $ iptables -I INPUT -p udp --sport 53 -m string --string googleusercontent --alg
 - tshark (wireshark 命令行版)
 - wireshark 学习书籍 《Wireshark网络分析就这么简单》和《Wireshark网络分析的艺术》
 - 在使用 mysql 的时候也遇到过反向解析导致的超时
+- fiddler 可以打开 pcap
 
 
 
