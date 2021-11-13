@@ -33,8 +33,9 @@ nav:
 
 #  -  性能优化 (复现 , 动手做基准测试 benchmark , 评判优化效果的指标(QPS....) ) :
           # 基准测试工具速查表  wrk , ab , stress , pktgen , jmeter , iperf
-#      - 基准测试工具实践: xxx.md    wrk , ab , stress ,模拟 cpu 模拟内存消耗
+#      - 基准测试工具实践: xxx.md    wrk , ab , stress ,模拟 cpu 模拟内存消耗 模拟网络消耗 io 消耗
 #      - singleflight 和 workerpool 优化代码 模拟复现,基准测试 ,看看8c16G 能有多少 qps 内部的某个接口的平均耗时 2s , 最近请求量多了还有超时 , 开始优化 , 模拟 http 每个 200ms , 模拟 mysql , 封装一个 mysql 结构体 , 请求计数, 当并发请求达到 1000 个时耗时增加  , 使用 wrk 和 ab , openresty实战 好像说 wrk 更好: too-much-folder/singleflight-workerpool.md
+          # 调试工具 gdb , coredump , objdump
 
 #          - go http client 参数优化: too-much-folder/go-http-client-config.md
 #          - tcp linux 参数优化: too-much-folder/tcp-linux-config.md
