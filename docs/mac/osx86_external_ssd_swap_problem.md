@@ -4,7 +4,7 @@
 公司电脑只有8G内存,打开大量网页的时候爆内存,黑苹果卡住
 
 ## 原因
-由于自己的黑苹果安装在外接的SSD硬盘上,通过USB接口连接,在mac中被识别为External Storage , 因此无法mount swap分区 , 相当于模式1 , 只使用内存 (为什么没有 OOM Killer 机制) , 一爆内存就死机
+由于自己的黑苹果安装在外接的SSD硬盘上,通过USB接口连接,在mac中被识别为External Storage , 因此无法mount swap分区 , 相当于模式1 , 只使用内存  , 一爆内存就死机(没有 OOM Killer 机制吗)
 
 ## 解决
 开机的时候强制mount ,添加启动脚本到/Library/LaunchDaemons/

@@ -96,8 +96,15 @@ Record lock, heap no 1 PHYSICAL RECORD: n_fields 1; compact format; info bits 0
 - order_no 设为唯一索引
 - 开启死锁检测  , show variables like '%deadlock%'; 检查死锁检测是否开启
 - 设置 lock_wait_timeout,  show variables like '%timeout%'; 检查 lock_wait 超时时间
-- 使用 RC 隔离级别 (如果业务允许幻读和不可重复读) , show variables like '%isolation%'; 检查隔离级别
 - gap lock 默认开启, innodb_locks_unsafe_for_binlog 为 disable
+
+## 预防措施
+
+- 避免长事务, 拆解事务
+- 更新表尽量使用主键
+- 使用 RC 隔离级别 (如果业务允许幻读和不可重复读) , show variables like '%isolation%'; 检查隔离级别
+- 保持执行顺序一致
+- 调小lockwait timeout , 避免大量事务等待消耗系统资源
 
 ## 死锁介绍
 
@@ -113,6 +120,7 @@ Record lock, heap no 1 PHYSICAL RECORD: n_fields 1; compact format; info bits 0
 - 跟间隙锁存在冲突关系的，是“往这个间隙中插入一个记录”这个操作。间隙锁之间都不存在冲突关系。
 - 间隙锁的意义是提高执行效率
 
+
 ```
 间隙锁的加锁规则
 加锁规则里面，包含了两个“原则”、两个“优化”和一个“bug”
@@ -123,6 +131,9 @@ Record lock, heap no 1 PHYSICAL RECORD: n_fields 1; compact format; info bits 0
 优化 2：索引上的等值查询，向右遍历时且最后一个值不满足等值条件的时候，next-key lock 退化为间隙锁。
 一个 bug：唯一索引上的范围查询会访问到不满足条件的第一个值为止
 ```
+
+数据库锁兼容性检查
+![image-20191120140931373](/img/db-deadlock.png)
 
 ## 参考资料
 - [36 | 记一次线上SQL死锁事故：如何避免死锁？](https://time.geekbang.org/column/article/117247)
