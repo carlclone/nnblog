@@ -1,0 +1,1 @@
+# qemu/kvm 单显卡直通 win/linux/mac 记录

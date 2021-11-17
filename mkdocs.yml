@@ -4,6 +4,8 @@ theme:
   highlightjs: true
 #  custom_dir: custom_theme/
   sticky_navigation: false
+  hljs_languages:
+        - go
 plugins:
   #  - markdownmermaid
   - mermaid2
@@ -12,6 +14,8 @@ extra_javascript:
   - js/custom.js
 #  - js/highlight.min.js
 #  - https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js
+extra_css:
+#  - css/extra.css
 nav:
   - 主页: index.md
   - 问题排查 :
@@ -31,27 +35,33 @@ nav:
       - network tcp 常见状态异常: too-much-folder/tcp-troubleshooting.md
       - all 问题排查速查表: too-much-folder/troubleshooting-cheatsheet.md
 
-#  -  性能优化 (复现 , 动手做基准测试 benchmark , 评判优化效果的指标(QPS....) ) :
+
+#  - 数据库 simpledb:
+#      -
+
+
+
+  -  性能优化/性能测试:
+       - TBD: asd.md
+       - go  benchmark 测试: asd.md
+#(复现 , 动手做基准测试 benchmark , 评判优化效果的指标(QPS....) ) :
+#      - 使用 stress 和 wrk 复现压测优化过程: dsad.md
           # 基准测试工具速查表  wrk , ab , stress , pktgen , jmeter , iperf
 #      - 基准测试工具实践: xxx.md    wrk , ab , stress ,模拟 cpu 模拟内存消耗 模拟网络消耗 io 消耗
 #      - singleflight 和 workerpool 优化代码 模拟复现,基准测试 ,看看8c16G 能有多少 qps 内部的某个接口的平均耗时 2s , 最近请求量多了还有超时 , 开始优化 , 模拟 http 每个 200ms , 模拟 mysql , 封装一个 mysql 结构体 , 请求计数, 当并发请求达到 1000 个时耗时增加  , 使用 wrk 和 ab , openresty实战 好像说 wrk 更好: too-much-folder/singleflight-workerpool.md
           # 调试工具 gdb , coredump , objdump
 
 #          - go http client 参数优化: too-much-folder/go-http-client-config.md
-#          - tcp linux 参数优化: too-much-folder/tcp-linux-config.md
 #          - zookeeper 对比我的 raft kv 实现: too-much-folder/zookeeper-vs-raft-kv.md
 #          - lock-free 队列 vs lock in go  sync.pool
           # docker k8s helm kvm 性能 压测 shell qemu
-#  - go 源码阅读:
 #          - go http client  在 手把手 web 框架学到的一个读源码的方式 , 实践一下: too-much-folder/go-http-client-dig-deep.md
 #          - etcd 的 watch 实现: too-much-folder/etcd-watch.md
 #          - 锁在 etcd 中的实现: too-much-folder/etcd-watch.md
           #- workerpool 源码阅读 , fasthttp
 
 
-          #  - 瞎折腾:
-          # arch linux 安装过程记录  想要装个最新内核的  准备过程
-          #      - qemu/kvm 单显卡直通 win/linux/mac 记录: too-much-folder/aaa.md
+#  - 瞎折腾:
           #        - 一台现代公路车的构成: sport/modern-bicycle-composition.md
           #        - 如何跑步: sport/run-the-right-way.md
           #        - 作为一个懒人如何跟上饮食: sport/eat.md
@@ -99,6 +109,7 @@ nav:
 
 
   - labs:
+      - golox - 过程中遇到和解决了什么问题,如何解决的,学到了什么: asd.md
 #      - golox - Scanner: labs/golox/scanner.md
 #      - golox - Parser: labs/golox/parser.md
 #      - golox - Resolver: labs/golox/resolver.md
@@ -110,6 +121,7 @@ nav:
 #      - xv6 - utils: labs/xv6/utils.md
 #      - xv6 - syscall: labs/xv6/syscall.md
       #      - xv6 - page table: labs/xv6/page-table.md
+      #- xv6 使用 gdb 调试打印内存布局: asd
       - MIT 6.824 - MapReduce: labs/6824-mapreduce.md
       - MIT 6.824 - Raft: labs/6824-raft.md
       - MIT 6.824 - KV: labs/6824-kv.md
@@ -131,9 +143,34 @@ nav:
       #      - Staffjoy 总结: labs/staffjoy.md
       #      - Distributed Crontab: labs/distributed-crontab.md
       #      - Talent Plan - TiKV Lab: asdasd
+  - 操作系统 :
+      - xv6 编译安装,启动: labs/xv6/xv6-install.md
+      - xv6 常用命令: asd.md
+      - xv6 gdb 调试案例: asd.md
+      - xv6 添加用户态程序: asd.md
+      - xv6 添加系统调用: asd.md
+      - xv6 优化 - 在内核态直接 deference 用户态指针: asd.md
+      - xv6 实现用户态 trap 处理: asd.md
+      - xv6 延迟分配用户态内存申请: asd.md
+      - xv6 实现 fork copy on write: asd.md
+      - xv6 实现多线程: asd.md
+      - xv6 优化 memory allocator 和 block cache , 减少锁竞争,提高并行度 (修改数据结构,锁策略): asd.md
+      - xv6 实现 - 支持大文件和符号逻辑: asd.md
+      - xv6 实现 - 支持mmap, 映射文件到地址空间, 和其他进程共享地址空间: asd.md
+      - xv6 实现 - 给 network interface card 写设备驱动: asd.md
+
+  - 源码阅读:
+      - go 源码阅读技巧: too-much-folder/go-doc-reading-technique.md
+      - channel 深入实验: too-much-folder/go-channel-in-open-source.md 在 go 并发课学到了很多新模式,实验回顾加深印象
+      - singleflight: too-much-folder/go-singleflight.md
+      - valyala/bytebufferpool: too-much-folder/go-valyala-bytebufferpool.md
+      - gammazero/workerpool: too-much-folder/go-gammazero-workerpool.md
+#      - valyala/fasthttp: too-much-folder/go-valyala-fasthttp.md
   - 工具:
-      - Xdebug 深入学习: tools/xdebug.md
-      - Chrome Dev Tools 深入学习: tools/chrome-dev-tools.md
+#      - arch linux 安装记录: too-much-folder/arch-linux.md
+#      - qemu/kvm 单显卡直通 mac 记录: too-much-folder/single-passthrough.md
+      - Xdebug : tools/xdebug.md
+      - Chrome Dev Tools : tools/chrome-dev-tools.md
       - Markdown Diagram 功能: tools/markdown-diagram.md
       - yaml lint: too-much-folder/yaml-lint.md
 #      - 零散的工具使用技巧: tools/other-tools-usage.md
@@ -149,13 +186,12 @@ nav:
 #      - 和波利亚学解题: problem-solve/learn-problem-solve-with-polya.md
 #      - 计数和概率: problem-solve/probability.md
 #      - 逻辑: problem-solve/逻辑智力题.md
-  - 构建自己的 X 项目:
-      - 构建自己的 jQuery: build-my-own-x/jquery.md
-      - 构建自己的 PHP 框架: build-my-own-x/php-framework.md
+#  - 构建自己的 X 项目:
+#      - 构建自己的 jQuery: build-my-own-x/jquery.md
 #        - 构建一个 DB
       #      - 尝试构建一个 Redis: build-my-own-x/redis.md
-      - 构建 Lisp Compiler: build-my-own-x/lisp-compiler.md
-      - Regex Engine 学习: build-my-own-x/regex.md
+#      - 构建 Lisp Compiler: build-my-own-x/lisp-compiler.md
+#      - Regex Engine 学习: build-my-own-x/regex.md
       #      - 构建自己的 JSON Compiler: asd
 #      - 构建自己的 Chip 8 Emulator: asd
       #      - 构建自己的 Vue 框架: build-my-own-x/vue.md
@@ -167,8 +203,9 @@ nav:
   #      - 自己的消息队列: asd.md
   - PHP:
       - Composer 是如何工作的: php/how-composer-work.md
-      - 关于业务代码的框架: php/business-logic-framework.md
+      - 业务代码的框架: php/business-logic-framework.md
       - Symfony Lock Component: php/symfony-lock.md
+      - 构建自己的 PHP 框架: build-my-own-x/php-framework.md
 
   - 杂项:
       - Mac Python环境 miniConda 搭建: others/mac_py_env_deploy.md
