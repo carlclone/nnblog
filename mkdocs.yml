@@ -40,11 +40,11 @@ nav:
 #      -
 
   - 源码阅读:
-      - gdb 汇编 go xv6 函数调用栈 atomic: too-much-folder/gdb.md
       - go 源码阅读技巧: too-much-folder/go-doc-reading-technique.md
-      - singleflight: too-much-folder/go-singleflight.md
+#      - gdb 汇编 go xv6 函数调用栈 atomic: too-much-folder/gdb.md
+#      - singleflight: too-much-folder/go-singleflight.md
       - valyala/bytebufferpool: too-much-folder/go-valyala-bytebufferpool.md
-      - 赋值取值操作为什么不是原子的: asd.md
+      - atomic LoadInt64 和 LoadInt32 使用疑问: too-much-folder/go-atomic.md
 #      - channel 深入实验: too-much-folder/go-channel-in-open-source.md 在 go 并发课学到了很多新模式,实验回顾加深印象
 #      - gammazero/workerpool: too-much-folder/go-gammazero-workerpool.md
   #      - valyala/fasthttp: too-much-folder/go-valyala-fasthttp.md
@@ -153,7 +153,7 @@ nav:
       #      - Staffjoy 总结: labs/staffjoy.md
       #      - Distributed Crontab: labs/distributed-crontab.md
       #      - Talent Plan - TiKV Lab: asdasd
-  - 操作系统 :
+#  - 操作系统 :
       # 其他课上的gdb调试过程
 #      - xv6 编译安装,启动: labs/xv6/xv6-install.md
 #      - xv6 常用命令: asd.md
