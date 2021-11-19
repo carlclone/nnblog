@@ -28,3 +28,6 @@ make qemu 进入 qemu 并启动 xv6
 CTRL+a x 退出qemu
 
 https://pdos.csail.mit.edu/6.828/2020/tools.html
+
+Installation error: gdb._execute_unwinders function is missing 
+macos解决方案: https://github.com/riscv-software-src/homebrew-riscv/issues/61

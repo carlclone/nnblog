@@ -39,11 +39,21 @@ nav:
 #  - 数据库 simpledb:
 #      -
 
+  - 源码阅读:
+      - gdb 汇编 go xv6 函数调用栈 atomic: too-much-folder/gdb.md
+      - go 源码阅读技巧: too-much-folder/go-doc-reading-technique.md
+      - singleflight: too-much-folder/go-singleflight.md
+      - valyala/bytebufferpool: too-much-folder/go-valyala-bytebufferpool.md
+      - 赋值取值操作为什么不是原子的: asd.md
+#      - channel 深入实验: too-much-folder/go-channel-in-open-source.md 在 go 并发课学到了很多新模式,实验回顾加深印象
+#      - gammazero/workerpool: too-much-folder/go-gammazero-workerpool.md
+  #      - valyala/fasthttp: too-much-folder/go-valyala-fasthttp.md
 
 
-  -  性能优化/性能测试:
-       - TBD: asd.md
-       - go  benchmark 测试: asd.md
+#  -  性能优化/性能测试:
+#       - 极客时间课看了再说, 看系统性能调优必知必会 , 再看一门性能测试?: asd.md
+#       - go  benchmark 和测试 总结: asd.md
+
 #(复现 , 动手做基准测试 benchmark , 评判优化效果的指标(QPS....) ) :
 #      - 使用 stress 和 wrk 复现压测优化过程: dsad.md
           # 基准测试工具速查表  wrk , ab , stress , pktgen , jmeter , iperf
@@ -109,7 +119,7 @@ nav:
 
 
   - labs:
-      - golox - 过程中遇到和解决了什么问题,如何解决的,学到了什么: asd.md
+#      - golox - 过程中遇到和解决了什么问题,如何解决的,学到了什么: asd.md
 #      - golox - Scanner: labs/golox/scanner.md
 #      - golox - Parser: labs/golox/parser.md
 #      - golox - Resolver: labs/golox/resolver.md
@@ -144,28 +154,24 @@ nav:
       #      - Distributed Crontab: labs/distributed-crontab.md
       #      - Talent Plan - TiKV Lab: asdasd
   - 操作系统 :
-      - xv6 编译安装,启动: labs/xv6/xv6-install.md
-      - xv6 常用命令: asd.md
-      - xv6 gdb 调试案例: asd.md
-      - xv6 添加用户态程序: asd.md
-      - xv6 添加系统调用: asd.md
-      - xv6 优化 - 在内核态直接 deference 用户态指针: asd.md
-      - xv6 实现用户态 trap 处理: asd.md
-      - xv6 延迟分配用户态内存申请: asd.md
-      - xv6 实现 fork copy on write: asd.md
-      - xv6 实现多线程: asd.md
-      - xv6 优化 memory allocator 和 block cache , 减少锁竞争,提高并行度 (修改数据结构,锁策略): asd.md
-      - xv6 实现 - 支持大文件和符号逻辑: asd.md
-      - xv6 实现 - 支持mmap, 映射文件到地址空间, 和其他进程共享地址空间: asd.md
-      - xv6 实现 - 给 network interface card 写设备驱动: asd.md
+      # 其他课上的gdb调试过程
+#      - xv6 编译安装,启动: labs/xv6/xv6-install.md
+#      - xv6 常用命令: asd.md
+#      - xv6 gdb 调试案例: asd.md
+#      - xv6 添加用户态程序: asd.md
+#      - xv6 排查用户态程序没有 exit 导致的IP 寄存器越界问题: asd.md
+#      - xv6 添加系统调用: asd.md   添加系统调用的步骤 , 调试跟着系统调用过程
+#      - xv6 启动过程调试: asd.md
+#      - xv6 优化 - 在内核态直接 deference 用户态指针: asd.md
+#      - xv6 实现用户态 trap 处理: asd.md
+#      - xv6 延迟分配用户态内存申请: asd.md
+#      - xv6 实现 fork copy on write: asd.md
+#      - xv6 实现多线程: asd.md
+#      - xv6 优化 memory allocator 和 block cache , 减少锁竞争,提高并行度 (修改数据结构,锁策略): asd.md
+#      - xv6 实现 - 支持大文件和符号逻辑: asd.md
+#      - xv6 实现 - 支持mmap, 映射文件到地址空间, 和其他进程共享地址空间: asd.md
+#      - xv6 实现 - 给 network interface card 写设备驱动: asd.md
 
-  - 源码阅读:
-      - go 源码阅读技巧: too-much-folder/go-doc-reading-technique.md
-      - channel 深入实验: too-much-folder/go-channel-in-open-source.md 在 go 并发课学到了很多新模式,实验回顾加深印象
-      - singleflight: too-much-folder/go-singleflight.md
-      - valyala/bytebufferpool: too-much-folder/go-valyala-bytebufferpool.md
-      - gammazero/workerpool: too-much-folder/go-gammazero-workerpool.md
-#      - valyala/fasthttp: too-much-folder/go-valyala-fasthttp.md
   - 工具:
 #      - arch linux 安装记录: too-much-folder/arch-linux.md
 #      - qemu/kvm 单显卡直通 mac 记录: too-much-folder/single-passthrough.md

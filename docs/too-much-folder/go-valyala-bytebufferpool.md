@@ -40,8 +40,11 @@ type Pool struct {
 有很多细节上的优化, 算是复习了一下之前学习的知识点
 
 - cpu cache line
-这里使用了最小 64 字节并已他为倍数, 提高 cpu 各级缓存使用率 , 同时使得命中率也一起提升
-  
+这里使用了最小 64 字节并已他为倍数, 为什么要用 64 位, 因为 cpu cache 从内存加载到各级 cache 是以 64 字节的 cache line 为单位的 , 使用 64 字节可以避免最坏情况下多次访问内存 , 比如 50 字节 (没有64 字节对齐)
+
+[计算机组成原理- 高速缓存（上）：“4毫秒”究竟值多少钱？](https://time.geekbang.org/column/article/107477)
+[系统性能调优必知必会-01 | CPU缓存：怎样写代码能够让CPU执行得更快？]()
+
 
 - 基于统计的阈值校准
 
@@ -74,11 +77,17 @@ if !atomic.CompareAndSwapUint64(&p.calibrating, 0, 1) {
 
 atomic 包则保证了 64 位的操作是原子的,并且在多处理器,多核,有 cpu cache 的情况下 , 不会被乱序执行(内存屏障) 
 
-单条指令的一致性有总线协议保障(硬件实现) , 多条指令则由内存屏障保障一致性 
+单条指令的一致性有总线协议 和缓存一致性协议保障(硬件实现) , 多条指令则由内存屏障确保有序保障一致性
+
+除了原子性 , 现在又多了可见性和有序性
+
+https://blog.huoding.com/2021/10/08/958
 
 - atomic 包
 
 主要提供了三种接口, RMW (read-modify-write ), 加载 , 存储 , 记住传的是指针  
+
+[go 并发-12丨 atomic：要保证原子操作，一定要使用这几种方法]()
 
 - 没有分不同buffer 大小的池子
 
@@ -93,20 +102,42 @@ atomic 包则保证了 64 位的操作是原子的,并且在多处理器,多核,
 
 像 mysql 的连接池也是一样 , 耗时的操作也可以放到另外一个连接池去 , 减少对短时操作的影响
 
+这里有另外一个库实现了 , 实现也不难,再这个 pool 的基础上再封装一层pool 的数组,不同大小的 buffer 从不同的 pool 中取 参考 go 并发 [pool 性能提升大杀器](file:///Volumes/COURSE/%E6%96%B0%E5%88%86%E7%B1%BB/Go%E5%92%8C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%AD%98%E5%82%A8%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/go%E5%B9%B6%E5%8F%91/10%E4%B8%A8%20Pool%EF%BC%9A%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87%E5%A4%A7%E6%9D%80%E5%99%A8.html)
+
 
 ## atomic 测试 , 汇编代码查看 , gdb 调试
+很难测啊,算了
+汇编代码可以看看 给出路径
 
-## 性能测试
-## 和其他byte buffer pool库对比 , go 写性能测试代码 , 如何性能测试
+go build之后
+sudo gdb 程序名 或 gdb 程序名
+run
+
+list 和 layout next 继续 next 可以看汇编窗口
+
+https://www.cnblogs.com/beyondblog/p/4423173.html
 
 ## 发现还有 32 位的 atomic 操作
 在看 atomic 包的时候发现还有各种 32 位的操作, 64 位的可以理解(因为有 32 位的机器) , 难道还有16 位的机器用 go 吗?
 
-尝试用 64 位和 32 位编译 , 发现汇编是一样的 , 
+尝试用 64 位和 32 位编译 , 发现汇编是一样的 ,
 
 翻阅代码发现只是一个 doc.go , 但是同目录下有个 asm.S , 看来是用汇编写的, 原来 arm 平台的 int32 操作不是单条指令的 , 所以为了兼容多平台 , gammazero/workerpool 对 int32 也采用了 atomic 包
 
+## 性能测试
+## 和其他byte buffer pool库对比 , go 写性能测试代码 , 如何性能测试
+
+库里面是怎么写不同库的性能测试代码的
+
+https://maolonglong.tech/golang/bytebufferpool/
+
+https://github.com/omgnull/go-benchmark
+https://omgnull.github.io/go-benchmark/buffer/
+
+https://zhuanlan.zhihu.com/p/80578541
+
+go 项目开发实战 - 性能分析 , 测试
+
 ## 参考资料
 
-[go 并发-要保证原子操作，一定要使用这几种方法]()
 [wiki-内存屏障](https://zh.wikipedia.org/wiki/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C)
