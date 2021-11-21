@@ -1,7 +1,7 @@
 
 ## About me
 
- 后端 || 自行车 || 学习基础软件原理 || troubleshooting / performance
+ 后端 || 自行车 || troubleshooting || performance
   
   [Github](https://github.com/carlclone) 
   

@@ -56,3 +56,4 @@ Goland : 开启probable bug inspection , 并修改为 error 级别警告 , 修�
 - go vet 静态检查
 - gofmt
 
+https://goreportcard.com/report/github.com/gammazero/workerpool

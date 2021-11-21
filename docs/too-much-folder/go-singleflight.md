@@ -18,3 +18,5 @@ map 在真正使用时才实例化, lazy allocation
 画个时序图
 使用 flag + channel 实现一个简单版的
 使用 atomic 操作保证 happens-before 执行顺序保证
+
+waitgroup 可以是一个 goroutine 等待一组 , 也可以是一组 goroutine 等待一个

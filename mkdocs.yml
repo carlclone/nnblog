@@ -1,11 +1,11 @@
 site_name: Log0c
 theme:
   name: readthedocs
-  highlightjs: true
+  highlightjs: false
 #  custom_dir: custom_theme/
   sticky_navigation: false
-  hljs_languages:
-        - go
+#  hljs_languages:
+#        - go
 plugins:
   #  - markdownmermaid
   - mermaid2
@@ -16,6 +16,7 @@ extra_javascript:
 #  - https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js
 extra_css:
 #  - css/extra.css
+#  - css/github.min.css
 nav:
   - 主页: index.md
   - 问题排查 :
@@ -40,13 +41,19 @@ nav:
 #      -
 
   - 源码阅读:
-      - go 源码阅读技巧: too-much-folder/go-doc-reading-technique.md
-#      - gdb 汇编 go xv6 函数调用栈 atomic: too-much-folder/gdb.md
-#      - singleflight: too-much-folder/go-singleflight.md
+      - go 源码阅读小技巧: too-much-folder/go-doc-reading-technique.md
       - valyala/bytebufferpool: too-much-folder/go-valyala-bytebufferpool.md
-      - atomic LoadInt64 和 LoadInt32 使用疑问: too-much-folder/go-atomic.md
-#      - channel 深入实验: too-much-folder/go-channel-in-open-source.md 在 go 并发课学到了很多新模式,实验回顾加深印象
+      - 为什么 int 操作要使用 atomic : too-much-folder/go-atomic.md
+      - zookeeper 对读的优化: too-much-folder/zookeeper-read-optimize.md
+      - go http client 错误使用: too-much-folder/go-http-client-err.md
+#      - singleflight: too-much-folder/go-singleflight.md
 #      - gammazero/workerpool: too-much-folder/go-gammazero-workerpool.md
+      #      - gdb 汇编 go xv6 函数调用栈 atomic: too-much-folder/gdb.md
+#      - channel 深入实验: too-much-folder/go-channel-in-open-source.md 在 go 并发课学到了很多新模式,实验回顾加深印象
+#      - gammazero/deque: sad.md
+#      - go http client: asd.md
+#      - retryable: asd.md
+#      - copier: asd.md 或其他用到反射的项目 , 不是很喜欢 gorm
   #      - valyala/fasthttp: too-much-folder/go-valyala-fasthttp.md
 
 
@@ -155,18 +162,19 @@ nav:
       #      - Talent Plan - TiKV Lab: asdasd
 #  - 操作系统 :
       # 其他课上的gdb调试过程
-#      - xv6 编译安装,启动: labs/xv6/xv6-install.md
-#      - xv6 常用命令: asd.md
-#      - xv6 gdb 调试案例: asd.md
-#      - xv6 添加用户态程序: asd.md
-#      - xv6 排查用户态程序没有 exit 导致的IP 寄存器越界问题: asd.md
-#      - xv6 添加系统调用: asd.md   添加系统调用的步骤 , 调试跟着系统调用过程
-#      - xv6 启动过程调试: asd.md
-#      - xv6 优化 - 在内核态直接 deference 用户态指针: asd.md
-#      - xv6 实现用户态 trap 处理: asd.md
-#      - xv6 延迟分配用户态内存申请: asd.md
-#      - xv6 实现 fork copy on write: asd.md
-#      - xv6 实现多线程: asd.md
+      - xv6 编译安装,启动: labs/xv6/xv6-install.md
+      - xv6 常用命令: asd.md
+      - xv6 riscv64 寄存器: asd.md
+      - xv6 gdb 调试案例: asd.md
+      - xv6 添加用户态程序: asd.md
+      - xv6 排查用户态程序没有 exit 导致的IP 寄存器越界问题: asd.md
+      - xv6 添加系统调用: asd.md   添加系统调用的步骤 , 调试跟着系统调用过程
+      - xv6 启动过程调试: asd.md
+      - xv6 优化 - 在内核态直接 deference 用户态指针: asd.md
+      - xv6 实现用户态 trap 处理: asd.md
+      - xv6 延迟分配用户态内存申请: asd.md
+      - xv6 实现 fork copy on write: asd.md
+      - xv6 实现多线程: asd.md
 #      - xv6 优化 memory allocator 和 block cache , 减少锁竞争,提高并行度 (修改数据结构,锁策略): asd.md
 #      - xv6 实现 - 支持大文件和符号逻辑: asd.md
 #      - xv6 实现 - 支持mmap, 映射文件到地址空间, 和其他进程共享地址空间: asd.md
@@ -236,11 +244,11 @@ nav:
       - Laravel中的Marcoable: archive/laravel_marcoable.md
       - Laravel框架关键技术-阅读总结: archive/laravel_code_book_reading.md
       - Laravel-Admin源码阅读: archive/laravel_admin_code_reading.md
-      - 实习: archive/first_internship.md
-      - 2017 总结: summary/2017.md
-      - 2018 总结: archive/second_job.md
-      - 2019 总结: summary/2019.md
-      - 2020 总结: summary/2020.md
+#      - 实习: archive/first_internship.md
+#      - 2017 总结: summary/2017.md
+#      - 2018 总结: archive/second_job.md
+#      - 2019 总结: summary/2019.md
+#      - 2020 总结: summary/2020.md
 
 
   #  - 问题排查:
