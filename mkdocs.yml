@@ -20,41 +20,41 @@ extra_css:
 nav:
   - 主页: index.md
   - 问题排查 :
-      - mac 网易云音乐 cpu 占用高问题排查: too-much-folder/netease-music-problem.md
+      - mac 网易云音乐 cpu 占用高排查: tomchfd/black-box-netease-music-problem.md
       - mac 外部 SSD Swap 分区开启问题: mac/osx86_external_ssd_swap_problem.md
       - mac Notes.app 卡死问题: mac/mac-note-stalled.md
-      - go 使用 pprof 排查内存泄漏: too-much-folder/go-pprof-memory-leak.md
-      - go bytebufferpool 错误使用一例: too-much-folder/go-bytebufferpool-leak-doubt.md
-      - go shadowing variable 造成的歧义: too-much-folder/go-shadowing-variable.md
-      - go 并发读写 map 问题一例: too-much-folder/go-concurrent-map-read-write-bug.md
-      - db metadata lock 问题排查: too-much-folder/db-metadatalock.md
-      - db 间隙锁造成的死锁: too-much-folder/db-deadlock.md
-      - db 复现不同索引之间的死锁: too-much-folder/db-deadlock-2.md
-      - io 黑盒排查磁盘空间告警/IO问题: too-much-folder/black-box-io-problem.md
-      - cpu 排查的几个案例: too-much-folder/black-box-cpu-high-problem.md
-      - network 排查的几个案例: too-much-folder/black-box-network-problem.md
-      - network tcp 常见状态异常: too-much-folder/tcp-troubleshooting.md
-      - all 问题排查速查表: too-much-folder/troubleshooting-cheatsheet.md
+      - go 使用 pprof 排查内存泄漏: tomchfd/go-pprof-memory-leak.md
+      - go bytebufferpool 错误使用一例: tomchfd/go-bytebufferpool-leak-doubt.md
+      - go shadowing variable 造成的歧义: tomchfd/go-shadowing-variable.md
+      - go 并发读写 map 问题一例: tomchfd/go-concurrent-map-read-write-bug.md
+      - db metadata lock 问题排查: tomchfd/db-metadatalock.md
+      - db 间隙锁造成的死锁: tomchfd/db-deadlock.md
+      - db 复现不同索引之间的死锁: tomchfd/db-deadlock-2.md
+      - io 黑盒排查磁盘空间告警/IO问题: tomchfd/black-box-io-problem.md
+      - cpu 排查的几个案例: tomchfd/black-box-cpu-high-problem.md
+      - network 排查的几个案例: tomchfd/black-box-network-problem.md
+      - network tcp 常见状态异常: tomchfd/black-box-tcp-troubleshooting.md
+      - all 问题排查速查表: tomchfd/black-box-troubleshooting-cheatsheet.md
 
 
 #  - 数据库 simpledb:
 #      -
 
   - 源码阅读:
-      - go 源码阅读小技巧: too-much-folder/go-doc-reading-technique.md
-      - valyala/bytebufferpool: too-much-folder/go-valyala-bytebufferpool.md
-      - 为什么 int 操作要使用 atomic : too-much-folder/go-atomic.md
-      - zookeeper 对读的优化: too-much-folder/zookeeper-read-optimize.md
-      - go http client 错误使用: too-much-folder/go-http-client-err.md
-#      - singleflight: too-much-folder/go-singleflight.md
-#      - gammazero/workerpool: too-much-folder/go-gammazero-workerpool.md
-      #      - gdb 汇编 go xv6 函数调用栈 atomic: too-much-folder/gdb.md
-#      - channel 深入实验: too-much-folder/go-channel-in-open-source.md 在 go 并发课学到了很多新模式,实验回顾加深印象
+      - go 源码阅读小技巧: tomchfd/go-doc-reading-technique.md
+      - valyala/bytebufferpool: tomchfd/go-valyala-bytebufferpool.md
+      - atomic LoadInt64 / LoadInt32 : tomchfd/go-atomic.md
+#      - zookeeper 对读的优化: tomchfd/zookeeper-read-optimize.md
+#      - go http client 错误使用: tomchfd/go-http-client-err.md
+#      - singleflight: tomchfd/go-singleflight.md
+#      - gammazero/workerpool: tomchfd/go-gammazero-workerpool.md
+      #      - gdb 汇编 go xv6 函数调用栈 atomic: tomchfd/gdb.md
+#      - channel 深入实验: tomchfd/go-channel-in-open-source.md 在 go 并发课学到了很多新模式,实验回顾加深印象
 #      - gammazero/deque: sad.md
 #      - go http client: asd.md
 #      - retryable: asd.md
 #      - copier: asd.md 或其他用到反射的项目 , 不是很喜欢 gorm
-  #      - valyala/fasthttp: too-much-folder/go-valyala-fasthttp.md
+  #      - valyala/fasthttp: tomchfd/go-valyala-fasthttp.md
 
 
 #  -  性能优化/性能测试:
@@ -65,16 +65,16 @@ nav:
 #      - 使用 stress 和 wrk 复现压测优化过程: dsad.md
           # 基准测试工具速查表  wrk , ab , stress , pktgen , jmeter , iperf
 #      - 基准测试工具实践: xxx.md    wrk , ab , stress ,模拟 cpu 模拟内存消耗 模拟网络消耗 io 消耗
-#      - singleflight 和 workerpool 优化代码 模拟复现,基准测试 ,看看8c16G 能有多少 qps 内部的某个接口的平均耗时 2s , 最近请求量多了还有超时 , 开始优化 , 模拟 http 每个 200ms , 模拟 mysql , 封装一个 mysql 结构体 , 请求计数, 当并发请求达到 1000 个时耗时增加  , 使用 wrk 和 ab , openresty实战 好像说 wrk 更好: too-much-folder/singleflight-workerpool.md
+#      - singleflight 和 workerpool 优化代码 模拟复现,基准测试 ,看看8c16G 能有多少 qps 内部的某个接口的平均耗时 2s , 最近请求量多了还有超时 , 开始优化 , 模拟 http 每个 200ms , 模拟 mysql , 封装一个 mysql 结构体 , 请求计数, 当并发请求达到 1000 个时耗时增加  , 使用 wrk 和 ab , openresty实战 好像说 wrk 更好: tomchfd/singleflight-workerpool.md
           # 调试工具 gdb , coredump , objdump
 
-#          - go http client 参数优化: too-much-folder/go-http-client-config.md
-#          - zookeeper 对比我的 raft kv 实现: too-much-folder/zookeeper-vs-raft-kv.md
+#          - go http client 参数优化: tomchfd/go-http-client-config.md
+#          - zookeeper 对比我的 raft kv 实现: tomchfd/zookeeper-vs-raft-kv.md
 #          - lock-free 队列 vs lock in go  sync.pool
           # docker k8s helm kvm 性能 压测 shell qemu
-#          - go http client  在 手把手 web 框架学到的一个读源码的方式 , 实践一下: too-much-folder/go-http-client-dig-deep.md
-#          - etcd 的 watch 实现: too-much-folder/etcd-watch.md
-#          - 锁在 etcd 中的实现: too-much-folder/etcd-watch.md
+#          - go http client  在 手把手 web 框架学到的一个读源码的方式 , 实践一下: tomchfd/go-http-client-dig-deep.md
+#          - etcd 的 watch 实现: tomchfd/etcd-watch.md
+#          - 锁在 etcd 中的实现: tomchfd/etcd-watch.md
           #- workerpool 源码阅读 , fasthttp
 
 
@@ -88,10 +88,10 @@ nav:
 
           # 延后
             #          - atomic 在 go 中的使用  , 为什么用了? 因为 int64 操作可能不是原子的
-            #          - 连接池使用注意事项: too-much-folder/tcp-linux-config.md
+            #          - 连接池使用注意事项: tomchfd/tcp-linux-config.md
 #  -  算法 用问题排查和性能优化的角度做 :
-          #      - 问题排查常用工具的实现原理: too-much-folder/troubleshooting-tools-dig-deep.md
-          #  - 重要提醒记录: too-much-folder/important-phase.md
+          #      - 问题排查常用工具的实现原理: tomchfd/troubleshooting-tools-dig-deep.md
+          #  - 重要提醒记录: tomchfd/important-phase.md
 
           # step: golox , simpledb , xv6 , zk , etcd , and others
           #  - sports
@@ -117,11 +117,11 @@ nav:
 
 
       #  (废弃)
-          #      - 数据库选错索引问题一例: too-much-folder/db-wrong-index.md
+          #      - 数据库选错索引问题一例: tomchfd/db-wrong-index.md
           # 黑盒查CPU 占用高 QPS 问题
-#      - 服务器内存检查手册: too-much-folder/black-box-memory-problem.md
-#      - 服务器 CPU 检查手册: too-much-folder/black-box-cpu-problem.md
-          #- 网络问题排查的一般思路: too-much-folder/network-problem-general-shooting.md
+#      - 服务器内存检查手册: tomchfd/black-box-memory-problem.md
+#      - 服务器 CPU 检查手册: tomchfd/black-box-cpu-problem.md
+          #- 网络问题排查的一般思路: tomchfd/network-problem-general-shooting.md
 
 
 
@@ -162,31 +162,44 @@ nav:
       #      - Talent Plan - TiKV Lab: asdasd
 #  - 操作系统 :
       # 其他课上的gdb调试过程
-      - xv6 编译安装,启动: labs/xv6/xv6-install.md
-      - xv6 常用命令: asd.md
-      - xv6 riscv64 寄存器: asd.md
-      - xv6 gdb 调试案例: asd.md
-      - xv6 添加用户态程序: asd.md
-      - xv6 排查用户态程序没有 exit 导致的IP 寄存器越界问题: asd.md
-      - xv6 添加系统调用: asd.md   添加系统调用的步骤 , 调试跟着系统调用过程
-      - xv6 启动过程调试: asd.md
-      - xv6 优化 - 在内核态直接 deference 用户态指针: asd.md
-      - xv6 实现用户态 trap 处理: asd.md
-      - xv6 延迟分配用户态内存申请: asd.md
-      - xv6 实现 fork copy on write: asd.md
-      - xv6 实现多线程: asd.md
 #      - xv6 优化 memory allocator 和 block cache , 减少锁竞争,提高并行度 (修改数据结构,锁策略): asd.md
 #      - xv6 实现 - 支持大文件和符号逻辑: asd.md
 #      - xv6 实现 - 支持mmap, 映射文件到地址空间, 和其他进程共享地址空间: asd.md
 #      - xv6 实现 - 给 network interface card 写设备驱动: asd.md
 
+# 收获 工作中有用的: 源码阅读, C , GDB 调试(感觉走读代码比较有用,平时还是 printf 多) , OS 知识
+  - xv6:
+      - xv6 速查表: tomchfd/xv6-cheatsheet.md
+      - xv6 riscv64 寄存器: asd.md
+      - xv6 整体源码结构: tomchfd/xv6-structure.md
+
+      - xv6 添加用户态程序: tomchfd/xv6-utils.md
+      - xv6 添加系统调用: tomchfd/xv6-syscall.md   添加系统调用的步骤 , 调试跟着系统调用过程
+      - xv6 优化- kernel 通过 MMU 解引用 user 指针: tomchfd/xv6-pgtbl.md
+
+      - xv6 实现用户态 trap 处理: asd.md
+      - xv6 优化-延迟分配用户态内存申请: asd.md
+      - xv6 优化-实现 fork copy on write: asd.md
+      - xv6 实现用户态协程: asd.md
+      - xv6 优化锁开销: asd.md
+      - xv6 支持大文件: asd.md
+      - xv6 实现 mmap: asd.md
+
+#      - xv6 启动过程跟踪: asd.md
+#      - xv6 调度阅读: asd.md
+      #      - xv6 编译安装,启动: labs/xv6/xv6-install.md
+      #      - xv6 排查用户态程序没有 exit 导致的IP 寄存器越界问题: asd.md
+      #      - xv6 gdb 调试案例: asd.md
+  #      - xv6 启动过程调试: asd.md
+
+
   - 工具:
-#      - arch linux 安装记录: too-much-folder/arch-linux.md
-#      - qemu/kvm 单显卡直通 mac 记录: too-much-folder/single-passthrough.md
+#      - arch linux 安装记录: tomchfd/arch-linux.md
+#      - qemu/kvm 单显卡直通 mac 记录: tomchfd/single-passthrough.md
       - Xdebug : tools/xdebug.md
       - Chrome Dev Tools : tools/chrome-dev-tools.md
       - Markdown Diagram 功能: tools/markdown-diagram.md
-      - yaml lint: too-much-folder/yaml-lint.md
+      - yaml lint: tomchfd/tool-yaml-lint.md
 #      - 零散的工具使用技巧: tools/other-tools-usage.md
 #      - RabbitMQ: asd.md
   - 算法:
@@ -244,11 +257,11 @@ nav:
       - Laravel中的Marcoable: archive/laravel_marcoable.md
       - Laravel框架关键技术-阅读总结: archive/laravel_code_book_reading.md
       - Laravel-Admin源码阅读: archive/laravel_admin_code_reading.md
-#      - 实习: archive/first_internship.md
-#      - 2017 总结: summary/2017.md
-#      - 2018 总结: archive/second_job.md
-#      - 2019 总结: summary/2019.md
-#      - 2020 总结: summary/2020.md
+      - 实习: archive/first_internship.md
+      - 2017 总结: summary/2017.md
+      - 2018 总结: archive/second_job.md
+      - 2019 总结: summary/2019.md
+      - 2020 总结: summary/2020.md
 
 
   #  - 问题排查:

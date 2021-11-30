@@ -1,14 +1,13 @@
 
-## About me
+## About
 
- 后端 || 自行车 || troubleshooting || performance
-  
-  [Github](https://github.com/carlclone) 
+笔记和文章记录 |  [Github](https://github.com/carlclone) 
   
 
   
 
 <!--
+ 后端 || 自行车 || troubleshooting || performance
 
 || [Leetcode](https://leetcode.com/carlclone/) || [Jianshu](https://www.jianshu.com/u/baea2de7cc1a) || [LaravelChina](https://learnku.com/blog/carlclone)
 
