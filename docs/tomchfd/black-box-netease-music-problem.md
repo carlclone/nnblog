@@ -1,14 +1,15 @@
 # mac 网易云音乐 cpu 占用高问题排查
 
 ## 问题描述 
-`网易云音乐`在我的 macos 10.13.6 上运行超过半小时就会占用 500% 的 cpu 
+
+网易云音乐客户端在 macos 10.13.6 上不定期地会占用 500% 的 cpu , 重装了也不行
 
 找了一圈也没搜到类似问题 , 恰好最近学习了 linux cpu 问题排查, 派上用场了
 
-另外一个问题是 mac 的 unix 系统标准和 linux 不太一样,很多工具都没有,还得边查边找替代品
+另外一个问题是 mac 的 unix 系统和 linux 不太一样,很多工具都没有, 得边查边找替代品
 
 ## 问题排查
-- 打算先看看 cpu 各个指标,结果连 top 也不一样,只拿到个 pid 17125
+- 打算先看看 cpu 各个指标,结果自带的 top 看不到cpu 详细指标,, 只拿到个 pid 17125
 - `perf` 的替代品 `sample 17125 -f output.prof`  `filtercalltree output.prof` , 得知有大量上下文切换函数和加锁解锁和文件操作
   
 ```
@@ -25,7 +26,7 @@
         __open  (in libsystem_kernel.dylib)        587                  # 打开文件
         close  (in libsystem_kernel.dylib)        251                   # 关闭文件
 ```
-  
+
 - 打开 `Activity Monitor.app` , 双击进程发现系统自带了 sample 功能
 - 打开 `statistics` 视图的时候, 发现各项指标都好高
 - 和 QQ 进程对比了一下,  mach 系统调用正常, 但是 上下文切换次数和 unix 系统调用超出了两个数量级, 有1亿次和6 亿次
@@ -83,15 +84,40 @@ close(0x3C)		 = 0 0
 getattrlist("/Users/lin/Library/Containers/com.netease.163music/Data/Caches/online_play_cache\0", 0x60800032228C, 0x7F8F3CA35AB8)		
 ```
 
-- 基本可以确定是这个缓存的问题了,将缓存文件夹删了重建
-- 跑了两小时,问题没有再出现
+- 有多个线程在不停加锁->读取同一个目录->解锁 , 并且进入了 mutexwait , 有锁争用的情况
+- 和正常情况对比, psynch_muetxtwait 的返回值里有个负数 , 像是一直错误or 超时一直重试, 但是看不到客户端源码, 放弃继续往下查
+- 尝试把出现在日志里的online_play_cache目录删除,重启客户端自动重建 , 还是出现类似的问题
+- 后来查阅了其他两个问题类似的 github issue , 都说是 mac os 版本兼容的问题 , 尤其是前端的 fsevent , 恰好这客户端也是套了js前端做的
+- 找了个足够旧版本的网易云音乐安装上 , 问题消失了...
+
+<!--
 
 ## 猜测
 
-网易云音乐客户端从 4,5 年前一直更新过来, 可能是以前的旧缓存导致的问题? 或者是缓存损坏?  `\0` 看着像 C 语言里的字符串结束符
+  `\0` 看着像 C 语言里的字符串结束符 , 应该不是这个问题
+  可能是之前系统崩溃后,文件夹的权限变化了
 
-## 疑问
+这里还得继续深究下去啊 , 问题的原因是什么, 就这样删除了 , 刚才又出现同样的问题了
+是崩溃导致的吗
+-->
 
-- 为什么系统调用高上下文切换也高呢?
 
-因为系统调用需要从用户态陷入(trap)内核态,同样需要保存寄存器数据,切换页表, 参考 `6.S081 xv6` 课程和 `OSTEP`
+## 后续
+
+- 为什么系统调用高上下文切换也高呢? 因为系统调用需要从用户态陷入(trap)内核态, 保存寄存器数据,切换页表, 参考 6.S081 xv6 课程和 OSTEP
+
+- 老版本系统还是不要随便更新东西了啊 , 可这些万恶的客户端一直弹更新很烦人
+
+- 虽然没查出什么有用的信息, 但过程还是挺有收获的
+
+## 可能有用的资料
+
+- man page
+- [darwin psynch_mutexwait syscall源码](https://devyang.space/2020/03/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3iOS%E4%B8%AD%E7%9A%84%E9%94%81/)
+- [bsd syscalls](https://opensource.apple.com/source/xnu/xnu-1504.3.12/bsd/kern/syscalls.master)
+- [dtruss](https://opensource.apple.com/source/dtrace/dtrace-147/DTTk/dtruss.auto.html)
+- [related issue](https://gitlab.com/gitlab-org/gitlab-foss/-/issues/33886)
+- [related issue](https://www.cnblogs.com/funkyRay/p/ios-di-ceng-yuan-li-qi-duo-xian-cheng-zhong.html)
+- [related is](https://github.com/owncloud/client/issues/5699)
+- [re i](https://www.virtualbox.org/ticket/18089?cversion=1&cnum_hist=18)
+- [re i](https://hello-david.github.io/archives/952f054c.html)
